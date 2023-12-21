@@ -3,23 +3,23 @@ import hevs.graphics.FunGraphics
 import java.awt.Color
 import java.awt.event.{MouseAdapter, MouseEvent}
 class Menu {
-  val s = new FunGraphics(300, 300, "Menu")
-
-  //Vinc
-  s.setColor(Color.LIGHT_GRAY)
-  s.drawFillRect(80, 20, 75, 20)
-  s.setColor(Color.BLACK)
-  s.drawString(90, 35, "Vinc")
-
+  val fg = new FunGraphics(300, 300, "Menu")
 
   //Nath
-  s.setColor(Color.LIGHT_GRAY)
-  s.drawFillRect(20, 20, 55, 20)
-  s.setColor(Color.BLACK)
-  s.drawString(30, 35, "Nath")
+  fg.setColor(Color.LIGHT_GRAY)
+  fg.drawFillRect(80, 20, 75, 20)
+  fg.setColor(Color.BLACK)
+  fg.drawString(90, 35, "DFS de Nathan")
 
 
-  s.addMouseListener(new MouseAdapter() {
+  //Vinc
+  fg.setColor(Color.LIGHT_GRAY)
+  fg.drawFillRect(20, 20, 55, 20)
+  fg.setColor(Color.BLACK)
+  fg.drawString(30, 35, "salope")
+
+
+  fg.addMouseListener(new MouseAdapter() {
     override def mouseClicked(e: MouseEvent): Unit = {
       val event = e
 
