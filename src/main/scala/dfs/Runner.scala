@@ -1,27 +1,21 @@
-import hevs.graphics.FunGraphics
+package dfs
 
-import java.awt.Color
+import general.{Cell, MazeDrawer, Direction}
+
 import scala.collection.mutable
 import scala.util.Random
-case class Cell(x: Int, y: Int)
-class Nath {
-  val fg = new FunGraphics(300, 300, "DFS")
-  val MAZEDIMENSIONS = 6
-  val ratio = fg.width/MAZEDIMENSIONS
 
-  fg.setColor(Color.black)
-  // Draw black bg
-  for(y <- 0 until fg.height; x <- 0 until fg.width) {
-    fg.setPixel(x,y)
-  }
+class Runner {
+  val MAZEDIMENSIONS = 10
+  val mazeDrawer = new MazeDrawer(500, "DFS", MAZEDIMENSIONS)
 
   /**
    * DFS Algorithm
-    * @param location
+   * @param location
    * @param visited
    */
   def backtracker(location: Cell, visited: mutable.Set[Cell]): Unit = {
-//    Thread.sleep(1000)
+    //    Thread.sleep(1000)
     visited += location;
 
     val neighbours: Array[Cell] = new Array(4)
@@ -37,27 +31,23 @@ class Nath {
     for(pos <- neighbours) {
       val isInDimensions: Boolean = (
         pos.x < MAZEDIMENSIONS && pos.x >= 0 &&
-        pos.y < MAZEDIMENSIONS && pos.y >= 0
-      )
+          pos.y < MAZEDIMENSIONS && pos.y >= 0
+        )
 
       if(!visited.contains(pos) && isInDimensions) {
         println(s"Found neighbour: $pos")
-        fg.setColor(Color.white)
 
-        // GOING LEFT
+        // TODO: Find a way to get a non graphical result
+
         if(pos.x < location.x)
-          fg.drawFillRect(pos.x*ratio+1, pos.y*ratio+1, ratio*2-1, ratio-1)
-        // GOING RIGHT
+          mazeDrawer.drawCell(pos, Direction.LEFT)
         else if (pos.x > location.x)
-          fg.drawFillRect(location.x*ratio+1, location.y*ratio+1, ratio*2-1, ratio-1)
-        // GOING UP
+          mazeDrawer.drawCell(location, Direction.RIGHT)
         else if (pos.y < location.y)
-          fg.drawFillRect(pos.x*ratio+1, pos.y*ratio+1, ratio-1, ratio*2-1)
-        // GOING DOWN
+          mazeDrawer.drawCell(pos, Direction.UP)
         else if (pos.y > location.y)
-          fg.drawFillRect(location.x*ratio+1, location.y*ratio+1, ratio-1, ratio*2-1)
+          mazeDrawer.drawCell(location, Direction.DOWN)
 
-        Thread.sleep(250)
         backtracker(pos, visited)
       }
     }
@@ -77,5 +67,8 @@ class Nath {
   }
 
   var visitedCells: mutable.Set[Cell] = mutable.Set()
-  backtracker(Cell(0,0), visitedCells)
+  backtracker(Cell(
+    Random.nextInt(MAZEDIMENSIONS),
+    Random.nextInt(MAZEDIMENSIONS)
+  ), visitedCells)
 }

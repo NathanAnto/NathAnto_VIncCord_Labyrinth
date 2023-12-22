@@ -3,6 +3,7 @@ import hevs.graphics.FunGraphics
 import java.awt.Color
 import java.awt.event.{MouseAdapter, MouseEvent}
 class Menu {
+  // TODO: Rewrite menu code
   val fg = new FunGraphics(300, 300, "Menu")
 
   //Nath
@@ -36,7 +37,7 @@ class Menu {
 
       // Jeux Nath
       if (posx > 80 && posx < 135 && posy > 20 && posy < 40) {
-        var nat: Nath = new Nath()
+        var nat: dfs.Runner = new dfs.Runner()
       }
 
     }
