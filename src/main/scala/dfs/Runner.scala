@@ -5,11 +5,11 @@ import general.{Cell, MazeDrawer, Direction}
 import scala.collection.mutable
 import scala.util.Random
 
-class Runner extends general.Runner {
+class Runner extends Runnable {
   val MAZEDIMENSIONS = 10
   var mazeDrawer: MazeDrawer = _
 
-  override def start(): Unit = {
+  override def run(): Unit = {
     mazeDrawer = new MazeDrawer(500, "DFS", MAZEDIMENSIONS)
     backtracker(Cell(
       Random.nextInt(MAZEDIMENSIONS),
@@ -18,12 +18,11 @@ class Runner extends general.Runner {
   }
 
   /**
-   * DFS Algorithm
-   * @param location location of next cell
-   * @param visited Set if visited cells
+   * DFS Algorithm backtracker
+   * @param location location of next [[Cell]]
+   * @param visited [[Set]] of visited cells
    */
   private def backtracker(location: Cell, visited: mutable.Set[Cell]): Unit = {
-    //    Thread.sleep(1000)
     visited += location;
 
     val neighbours: Array[Cell] = new Array(4)
@@ -38,11 +37,11 @@ class Runner extends general.Runner {
     for(pos <- neighbours) {
       val isInDimensions: Boolean = (
         pos.x < MAZEDIMENSIONS && pos.x >= 0 &&
-          pos.y < MAZEDIMENSIONS && pos.y >= 0
-        )
+        pos.y < MAZEDIMENSIONS && pos.y >= 0
+      )
 
       if(!visited.contains(pos) && isInDimensions) {
-        println(s"Found neighbour: $pos")
+//        println(s"Found neighbour: $pos")
 
         // TODO: Find a way to get a non graphical result
 
@@ -63,8 +62,8 @@ class Runner extends general.Runner {
   /**
    * Generates list of numbers from 0 to 'length'
    * in random order
-   * @param length size of sequence
-   * @return Array of numbers
+   * @param length size of sequence as an [[Int]]
+   * @return [[Array]] of [[Int]]s
    */
   private def generateSequence(length: Int): Array[Int] = {
     val res: Array[Int] = Array.fill(length)(-1)

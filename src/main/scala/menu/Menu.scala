@@ -16,9 +16,7 @@ class Menu {
   md.drawButton(Button.createButton(180, 20, "Kruskal", new kruskal.Runner()))
 
   fg.addMouseListener(new MouseAdapter() {
-    override def mouseClicked(e: MouseEvent): Unit = {
-      val event = e
-
+    override def mouseClicked(event: MouseEvent): Unit = {
       // Get the mouse position from the event
       val posX = event.getX
       val posY = event.getY

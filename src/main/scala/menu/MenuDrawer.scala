@@ -8,10 +8,10 @@ import scala.reflect.ClassTag
 
 class MenuDrawer(fg: FunGraphics) {
   /**
-   * Draw a created button
-   * @param btn
+   * Draw a created [[Button]]
+   * @param btn [[Button]] that will be drawn
    */
-  def drawButton(btn: Button[Runner]): Unit = {
+  def drawButton(btn: Button): Unit = {
     fg.setColor(Color.LIGHT_GRAY)
     fg.drawFillRect(btn.x, btn.y, 75, 20)
     fg.setColor(Color.BLACK)

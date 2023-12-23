@@ -1,5 +1,5 @@
 import menu.Menu
 
 object Main extends App {
-  var men: Menu = new Menu()
+  var menu: Menu = new Menu()
 }
