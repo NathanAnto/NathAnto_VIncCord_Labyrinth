@@ -5,16 +5,24 @@ import general.{Cell, MazeDrawer, Direction}
 import scala.collection.mutable
 import scala.util.Random
 
-class Runner {
+class Runner extends general.Runner {
   val MAZEDIMENSIONS = 10
-  val mazeDrawer = new MazeDrawer(500, "DFS", MAZEDIMENSIONS)
+  var mazeDrawer: MazeDrawer = _
+
+  override def start(): Unit = {
+    mazeDrawer = new MazeDrawer(500, "DFS", MAZEDIMENSIONS)
+    backtracker(Cell(
+      Random.nextInt(MAZEDIMENSIONS),
+      Random.nextInt(MAZEDIMENSIONS)
+    ), visited = mutable.Set())
+  }
 
   /**
    * DFS Algorithm
-   * @param location
-   * @param visited
+   * @param location location of next cell
+   * @param visited Set if visited cells
    */
-  def backtracker(location: Cell, visited: mutable.Set[Cell]): Unit = {
+  private def backtracker(location: Cell, visited: mutable.Set[Cell]): Unit = {
     //    Thread.sleep(1000)
     visited += location;
 
@@ -22,7 +30,6 @@ class Runner {
 
     // Randomize neighbour order
     val indices = generateSequence(neighbours.length)
-    println(indices.mkString(","))
     neighbours(indices(0)) = Cell(location.x, location.y-1) // TOP
     neighbours(indices(1)) = Cell(location.x-1, location.y) // LEFT
     neighbours(indices(2)) = Cell(location.x, location.y+1) // BOTTOM
@@ -53,22 +60,21 @@ class Runner {
     }
   }
 
-  def generateSequence(l: Int): Array[Int] = {
-    val res: Array[Int] = Array.fill(l)(-1)
-
+  /**
+   * Generates list of numbers from 0 to 'length'
+   * in random order
+   * @param length size of sequence
+   * @return Array of numbers
+   */
+  private def generateSequence(length: Int): Array[Int] = {
+    val res: Array[Int] = Array.fill(length)(-1)
     var num = 0
     for((i,index) <- res.zipWithIndex) {
       do {
-        num = Random.nextInt(l);
+        num = Random.nextInt(length);
       } while (res.contains(num))
       res(index) = num;
     }
     res
   }
-
-  var visitedCells: mutable.Set[Cell] = mutable.Set()
-  backtracker(Cell(
-    Random.nextInt(MAZEDIMENSIONS),
-    Random.nextInt(MAZEDIMENSIONS)
-  ), visitedCells)
 }
