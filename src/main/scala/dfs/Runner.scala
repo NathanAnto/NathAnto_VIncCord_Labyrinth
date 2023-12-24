@@ -1,17 +1,20 @@
 package dfs
 
-import general.{Cell, MazeDrawer, Direction}
+import general.{Cell, Maze, MazeDrawer, Direction}
 
 import scala.collection.mutable
 import scala.util.Random
 
 class Runner extends Runnable {
   val MAZEDIMENSIONS = 10
+  var maze: Maze = _
   var mazeDrawer: MazeDrawer = _
 
   override def run(): Unit = {
+    maze = new Maze
+    maze.create(MAZEDIMENSIONS)
     mazeDrawer = new MazeDrawer(500, "DFS", MAZEDIMENSIONS)
-    backtracker(Cell(
+    backtracker(maze.getCell(
       Random.nextInt(MAZEDIMENSIONS),
       Random.nextInt(MAZEDIMENSIONS)
     ), visited = mutable.Set())
@@ -25,23 +28,9 @@ class Runner extends Runnable {
   private def backtracker(location: Cell, visited: mutable.Set[Cell]): Unit = {
     visited += location;
 
-    val neighbours: Array[Cell] = new Array(4)
-
-    // Randomize neighbour order
-    val indices = generateSequence(neighbours.length)
-    neighbours(indices(0)) = Cell(location.x, location.y-1) // TOP
-    neighbours(indices(1)) = Cell(location.x-1, location.y) // LEFT
-    neighbours(indices(2)) = Cell(location.x, location.y+1) // BOTTOM
-    neighbours(indices(3)) = Cell(location.x+1, location.y) // RIGHT
-
-    for(pos <- neighbours) {
-      val isInDimensions: Boolean = (
-        pos.x < MAZEDIMENSIONS && pos.x >= 0 &&
-        pos.y < MAZEDIMENSIONS && pos.y >= 0
-      )
-
-      if(!visited.contains(pos) && isInDimensions) {
-//        println(s"Found neighbour: $pos")
+    for(pos <- location.neighbours) {
+      if(!visited.contains(pos) && pos != null) {
+        println(s"Found neighbour: $pos")
 
         // TODO: Find a way to get a non graphical result
 
@@ -57,23 +46,5 @@ class Runner extends Runnable {
         backtracker(pos, visited)
       }
     }
-  }
-
-  /**
-   * Generates list of numbers from 0 to 'length'
-   * in random order
-   * @param length size of sequence as an [[Int]]
-   * @return [[Array]] of [[Int]]s
-   */
-  private def generateSequence(length: Int): Array[Int] = {
-    val res: Array[Int] = Array.fill(length)(-1)
-    var num = 0
-    for((i,index) <- res.zipWithIndex) {
-      do {
-        num = Random.nextInt(length);
-      } while (res.contains(num))
-      res(index) = num;
-    }
-    res
   }
 }
