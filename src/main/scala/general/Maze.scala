@@ -47,8 +47,8 @@ class Maze {
   }
 
   def getRandomPassage: Passage = {
+    if(passages.size <= 1) return passages.head
     val num = Random.nextInt(passages.size)
-//    val p = passages.iterator.drop(num).next
     val p = passages.toIndexedSeq(num)
     passages -= p
     p

@@ -6,7 +6,7 @@ import java.awt.Color
 
 class MazeDrawer(size: Int, name: String, val mazeDimensions: Int) {
   val fg = new FunGraphics(size, size, name)
-  val ratio = size/mazeDimensions
+  private val ratio = size/mazeDimensions
 
   // Draw black bg
   fg.setColor(Color.black)
