@@ -7,6 +7,7 @@ import java.awt.Color
 class MazeDrawer(size: Int, name: String, val mazeDimensions: Int) {
   val fg = new FunGraphics(size, size, name)
   private val ratio = size/mazeDimensions
+  private val WALLSIZE = ratio/2
 
   // Draw black bg
   fg.setColor(Color.black)
@@ -15,14 +16,14 @@ class MazeDrawer(size: Int, name: String, val mazeDimensions: Int) {
   def drawCell(startPos: Cell, direction: String): Unit = {
     fg.setColor(Color.white)
 
-    val x = startPos.x * ratio + 1
-    val y = startPos.y * ratio + 1
+    val x = startPos.x * ratio + WALLSIZE
+    val y = startPos.y * ratio + WALLSIZE
 
     direction match {
-      case Direction.LEFT => fg.drawFillRect(x, y, ratio*2-1, ratio-1)
-      case Direction.RIGHT => fg.drawFillRect(x, y, ratio*2-1, ratio-1)
-      case Direction.UP => fg.drawFillRect(x, y, ratio-1, ratio*2-1)
-      case Direction.DOWN => fg.drawFillRect(x, y, ratio-1, ratio*2-1)
+      case Direction.LEFT => fg.drawFillRect(x, y, ratio*2-WALLSIZE, ratio-WALLSIZE)
+      case Direction.RIGHT => fg.drawFillRect(x, y, ratio*2-WALLSIZE, ratio-WALLSIZE)
+      case Direction.UP => fg.drawFillRect(x, y, ratio-WALLSIZE, ratio*2-WALLSIZE)
+      case Direction.DOWN => fg.drawFillRect(x, y, ratio-WALLSIZE, ratio*2-WALLSIZE)
     }
 
     Thread.sleep(100)

@@ -4,30 +4,22 @@ import scala.annotation.unused
 import scala.util.Random
 
 class Maze {
-  private var dimensions: Int = 5
-  var cells: Set[Cell] = Set()
-  var passages: Set[Passage] = Set()
-  var connections: Set[Set[Cell]] = Set()
+  protected var dimensions: Int = 5
+  protected var cells: Set[Cell] = Set()
+  private var usablePassages: Set[Passage] = Set()
 
-  def getDimensions = dimensions
-
-  def create(d: Int) {
+  def create(d: Int): Unit = {
     dimensions = d
+    createCells()
+  }
 
+  protected def createCells(): Unit = {
     // Get all cells
     for (y <- 0 until dimensions; x <- 0 until dimensions) {
       val c = new Cell(x, y)
       cells += c
-      connections += Set(c)
     }
-
-    // Get all passages and cell neighbours
-    for (cell <- cells; n <- cell.neighbours) {
-      cell.getNeighbours(this)
-      if ((!passages.contains(Passage(cell, n)) || !passages.contains(Passage(n, cell))) && n != null) {
-        passages += Passage(cell, n)
-      }
-    }
+    for(c <- cells) c.getNeighbours(this)
   }
 
   private def isInDimensions(x:Int, y:Int): Boolean =
@@ -46,11 +38,7 @@ class Maze {
     cells.iterator.drop(num).next
   }
 
-  def getRandomPassage: Passage = {
-    if(passages.size <= 1) return passages.head
-    val num = Random.nextInt(passages.size)
-    val p = passages.toIndexedSeq(num)
-    passages -= p
-    p
+  def addUsedPassage(passage: Passage): Unit = {
+    usablePassages += passage
   }
 }

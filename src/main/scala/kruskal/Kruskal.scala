@@ -4,10 +4,8 @@ import general.{Cell, Direction, Maze, MazeDrawer}
 
 class Kruskal {
   val MAZEDIMENSIONS = 10
-  var maze: Maze = _
+  var maze: KruskalMaze = new KruskalMaze
   var mazeDrawer: MazeDrawer = _
-
-  maze = new Maze
   maze.create(MAZEDIMENSIONS)
   mazeDrawer = new MazeDrawer(500, "Kruskal", MAZEDIMENSIONS)
   kruskal();
