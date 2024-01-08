@@ -4,9 +4,11 @@ import scala.annotation.unused
 import scala.util.Random
 
 class Maze {
+
   protected var dimensions: Int = 5
   protected var cells: Set[Cell] = Set()
   private var usablePassages: Set[Passage] = Set()
+  def getDimensions(): Int = dimensions
 
   def create(d: Int): Unit = {
     dimensions = d
