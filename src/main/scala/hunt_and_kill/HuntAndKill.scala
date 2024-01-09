@@ -1,23 +1,24 @@
 package hunt_and_kill
 
-import general.{Cell, Direction, Maze, MazeDrawer, Passage}
+import general.{Cell, Maze, MazeDrawer}
 
 import scala.collection.mutable
 import scala.util.Random
 
 class HuntAndKill {
   val MAZEDIMENSIONS = 10
-  var maze: Maze = _
-  var mazeDrawer: MazeDrawer = _
+  val maze: Maze = new Maze(MAZEDIMENSIONS)
+  maze.create()
 
-  maze = new Maze
-  maze.create(MAZEDIMENSIONS)
-  mazeDrawer = new MazeDrawer(500, "Hunt and Kill", MAZEDIMENSIONS)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(500, "Hunt & Kill", maze)
+
   huntAndKill(maze.getCell(
         Random.nextInt(MAZEDIMENSIONS),
         Random.nextInt(MAZEDIMENSIONS)
   ), visited = mutable.Set())
 
+  // TODO: Add pathfinding
+  // TODO: Add movable character
 
   /**
    * Hunt and kill Algorithm
@@ -30,45 +31,28 @@ class HuntAndKill {
 
     for(pos <- location.neighbours) {
       if (!visited.contains(pos) && pos != null) {
-        // TODO: Find a way to get a non graphical result
-        drawCells(pos, location)
+        mazeDrawer.drawCell(pos, location)
         huntAndKill(pos, visited)
       }
     }
 
-    if(visited.size < (maze.getDimensions()*maze.getDimensions()))
+    if(visited.size < (maze.dimensions*maze.dimensions))
       hunt(visited)
   }
 
   def hunt(visited: mutable.Set[Cell]): Unit = {
     // Find new Cell
-    for (y <- 0 until maze.getDimensions(); x <- 0 until maze.getDimensions()) {
+    for (y <- 0 until maze.dimensions; x <- 0 until maze.dimensions) {
       val cell = maze.getCell(x, y)
       if (!visited.contains(cell)) {
         for(n <- cell.neighbours) {
           if(visited.contains(n)) {
-            drawCells(n, cell)
+            mazeDrawer.drawCell(n, cell)
             huntAndKill(cell, visited)
             return
           }
         }
       }
-    }
-  }
-
-  private def drawCells(pos: Cell, location: Cell) = {
-    if (pos.x < location.x) {
-      maze.addUsedPassage(Passage(location, pos))
-      mazeDrawer.drawCell(pos, Direction.LEFT)
-    } else if (pos.x > location.x) {
-      maze.addUsedPassage(Passage(location, pos))
-      mazeDrawer.drawCell(location, Direction.RIGHT)
-    } else if (pos.y < location.y) {
-      maze.addUsedPassage(Passage(location, pos))
-      mazeDrawer.drawCell(pos, Direction.UP)
-    } else if (pos.y > location.y) {
-      maze.addUsedPassage(Passage(location, pos))
-      mazeDrawer.drawCell(location, Direction.DOWN)
     }
   }
 }

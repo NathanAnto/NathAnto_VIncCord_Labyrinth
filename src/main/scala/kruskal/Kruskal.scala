@@ -1,14 +1,18 @@
 package kruskal
 
-import general.{Cell, Direction, Maze, MazeDrawer}
+import general.{Cell, Direction, MazeDrawer}
 
 class Kruskal {
   val MAZEDIMENSIONS = 10
-  var maze: KruskalMaze = new KruskalMaze
-  var mazeDrawer: MazeDrawer = _
-  maze.create(MAZEDIMENSIONS)
-  mazeDrawer = new MazeDrawer(500, "Kruskal", MAZEDIMENSIONS)
+  val maze: KruskalMaze = new KruskalMaze(MAZEDIMENSIONS)
+  maze.create()
+
+  val mazeDrawer = new MazeDrawer(500, "Kruskal", maze)
+
   kruskal();
+
+  // TODO: Add pathfinding
+  // TODO: Add movable character
 
   def kruskal(): Unit = {
     // loop over every possible passage
@@ -27,7 +31,7 @@ class Kruskal {
       })
 
       if(!connected) {
-        // concat both sets to make them connected
+        // concat both sets to connect them
         val conn1: Option[Set[Cell]] = maze.connections.find(c => c.contains(p.cell1))
         val conn2: Option[Set[Cell]] = maze.connections.find(c => c.contains(p.cell2))
         maze.connections -= conn1.get
@@ -36,14 +40,7 @@ class Kruskal {
         val newConnection: Set[Cell] = conn1.get ++ conn2.get
         maze.connections += newConnection
 
-        if(p.cell1.x < p.cell2.x)
-          mazeDrawer.drawCell(p.cell1, Direction.LEFT)
-        else if (p.cell1.x > p.cell2.x)
-          mazeDrawer.drawCell(p.cell2, Direction.RIGHT)
-        else if (p.cell1.y < p.cell2.y)
-          mazeDrawer.drawCell(p.cell1, Direction.UP)
-        else if (p.cell1.y > p.cell2.y)
-          mazeDrawer.drawCell(p.cell2, Direction.DOWN)
+        mazeDrawer.drawCell(p.cell1, p.cell2)
       }
     } while(maze.connections.size > 1)
     println("Finished Kruskal")
