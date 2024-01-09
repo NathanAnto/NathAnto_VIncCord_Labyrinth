@@ -11,7 +11,7 @@ class Menu {
   val fg = new FunGraphics(300, 300, "Menu")
   private val md = new MenuDrawer(fg)
 
-  md.drawButton(Button.createButton(20, 20, "Vinc", new Vinc()))
+  md.drawButton(Button.createButton(20, 20, "Prims", new Prims.Runner()))
   md.drawButton(Button.createButton(100, 20, "DFS", new dfs.Runner()))
   md.drawButton(Button.createButton(180, 20, "Kruskal", new kruskal.Runner()))
   md.drawButton(Button.createButton(20, 60, "Hunt & Kill", new hunt_and_kill.Runner()))

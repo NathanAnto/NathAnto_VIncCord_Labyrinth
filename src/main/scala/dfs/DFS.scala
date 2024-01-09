@@ -31,7 +31,7 @@ class DFS {
     for(pos <- location.neighbours) {
       if(!visited.contains(pos) && pos != null) {
         // TODO: Find a way to get a non graphical result
-        mazeDrawer.drawCell(pos, location)
+        mazeDrawer.drawCells(pos, location)
 
         backtracker(pos, visited)
       }

@@ -40,7 +40,7 @@ class Kruskal {
         val newConnection: Set[Cell] = conn1.get ++ conn2.get
         maze.connections += newConnection
 
-        mazeDrawer.drawCell(p.cell1, p.cell2)
+        mazeDrawer.drawCells(p.cell1, p.cell2)
       }
     } while(maze.connections.size > 1)
     println("Finished Kruskal")

@@ -31,7 +31,7 @@ class HuntAndKill {
 
     for(pos <- location.neighbours) {
       if (!visited.contains(pos) && pos != null) {
-        mazeDrawer.drawCell(pos, location)
+        mazeDrawer.drawCells(pos, location)
         huntAndKill(pos, visited)
       }
     }
@@ -47,7 +47,7 @@ class HuntAndKill {
       if (!visited.contains(cell)) {
         for(n <- cell.neighbours) {
           if(visited.contains(n)) {
-            mazeDrawer.drawCell(n, cell)
+            mazeDrawer.drawCells(n, cell)
             huntAndKill(cell, visited)
             return
           }

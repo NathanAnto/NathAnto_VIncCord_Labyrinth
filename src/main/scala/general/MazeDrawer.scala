@@ -7,12 +7,22 @@ import java.awt.Color
 class MazeDrawer(size: Int, name: String, val maze: Maze) {
   val fg = new FunGraphics(size, size, name)
   private val ratio = size/maze.dimensions
-  private val WALLSIZE = 1 // ratio/2
+  private val WALLSIZE = 5 // ratio/2
 
   // Draw black bg
   fg.setColor(Color.black)
   for(y <- 0 until fg.height; x <- 0 until fg.width)
     fg.setPixel(x,y)
+
+  // Draw one cell
+  def drawCell(cell: Cell): Unit = {
+    val x = cell.x * ratio + WALLSIZE
+    val y = cell.y * ratio + WALLSIZE
+    fg.setColor(Color.red)
+    fg.drawFillRect(x, y, ratio-WALLSIZE, ratio-WALLSIZE)
+    //Thread.sleep(300)
+  }
+
 
   /**
    * Draw passage between the cells passed
@@ -20,19 +30,19 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
    * @param startCell cell from which to draw
    * @param endCell cell to draw to
    */
-  def drawCell(startCell: Cell, endCell: Cell): Unit = {
+  def drawCells(startCell: Cell, endCell: Cell): Unit = {
     if (startCell.x < endCell.x) {
       maze.addUsedPassage(Passage(endCell, startCell))
-      drawCell(startCell, Direction.LEFT)
+      drawCells(startCell, Direction.LEFT)
     } else if (startCell.x > endCell.x) {
       maze.addUsedPassage(Passage(endCell, startCell))
-      drawCell(endCell, Direction.RIGHT)
+      drawCells(endCell, Direction.RIGHT)
     } else if (startCell.y < endCell.y) {
       maze.addUsedPassage(Passage(endCell, startCell))
-      drawCell(startCell, Direction.UP)
+      drawCells(startCell, Direction.UP)
     } else if (startCell.y > endCell.y) {
       maze.addUsedPassage(Passage(endCell, startCell))
-      drawCell(endCell, Direction.DOWN)
+      drawCells(endCell, Direction.DOWN)
     }
   }
 
@@ -42,7 +52,7 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
    * @param startCell cell from which to draw
    * @param direction direction to draw from startCell
    */
-  def drawCell(startCell: Cell, direction: String): Unit = {
+  def drawCells(startCell: Cell, direction: String): Unit = {
     fg.setColor(Color.white)
 
     val x = startCell.x * ratio + WALLSIZE
