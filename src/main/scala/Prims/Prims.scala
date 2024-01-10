@@ -1,47 +1,50 @@
 package Prims
 
-import general.{Cell, Maze, MazeDrawer, Passage}
+import general.{Cell, Game, MazeDrawer, Mode}
 
-import scala.util.Random
+import java.awt.Color
 
-class Prims {
-  val MAZEDIMENSIONS = 15
-  val maze: Maze = new Maze(MAZEDIMENSIONS)
+class Prims(mode: String = Mode.GENERATION) {
+  val MAZEDIMENSIONS = 10
+  val maze: PrimsMaze = new PrimsMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(750, "Prims", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(500, "Prims", maze)
 
-  var frontier: Set[Cell] = Set()
   var visited: Set[Cell] = Set()
 
   primsfrontier(maze.getCell(0,0))
 
-
   def primsfrontier(location: Cell): Unit = {
     visited += location
+
+    // Get all neighbours that haven't been visited
     for(l <- location.neighbours){
-      if(l != null && !visited.contains(l)){
-        frontier += l
-        //mazeDrawer.drawCell(l)
+      if(!visited.contains(l)) {
+        maze.frontiers += l
+        if(mode == Mode.GENERATION)
+          mazeDrawer.drawCell(l, Color.red)
       }
     }
-    var nextcell: Cell = getRandomFrontier
+    var nextcell: Cell = maze.getRandomFrontier
+    if(nextcell == null) return
+
     visited += nextcell
-    for(n <- nextcell.neighbours){
-        if(visited.contains(n) ){
+
+    // Find a neighbour that has already been visited
+    for(n <- nextcell.neighbours) {
+        if(visited.contains(n)) {
           mazeDrawer.drawCells(nextcell,n)
+          if(mode == Mode.GENERATION) Thread.sleep(100)
           primsfrontier(nextcell)
+          return
         }
     }
   }
 
+  // If in game mode, start game
+  if(mode == Mode.GAME) new Game(maze, mazeDrawer)
 
-  def getRandomFrontier: Cell = {
-    if(frontier.size <= 1) return frontier.head
-    val num = Random.nextInt(frontier.size)
-    val p = frontier.toIndexedSeq(num)
-    frontier -= p
-    p
-  }
-
+  // TODO: Add pathfinding
+  //  if(mode == Mode.RESOLUTION) new DFSResolution(maze)
 }

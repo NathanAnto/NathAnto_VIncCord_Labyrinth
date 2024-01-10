@@ -1,10 +1,9 @@
 package general
 
-import scala.collection.mutable
 import scala.util.Random
 
 class Cell(val x: Int, val y: Int) {
-  val neighbours: Array[Cell] = new Array(4)
+  var neighbours: Set[Cell] = Set()
 
   /**
    * Generates list of numbers from 0 to 'length'
@@ -26,12 +25,17 @@ class Cell(val x: Int, val y: Int) {
 
   override def toString: String = s"Cell($x, $y)"
 
-  def getNeighbours(maze: Maze) = {
+  def findNeighbours(maze: Maze) = {
     // Random neighbour order
-    val indices = generateSequence(neighbours.length)
-    neighbours(indices(0)) = maze.getCell(x, y - 1) // TOP
-    neighbours(indices(1)) = maze.getCell(x - 1, y) // LEFT
-    neighbours(indices(2)) = maze.getCell(x, y + 1) // BOTTOM
-    neighbours(indices(3)) = maze.getCell(x + 1, y) // RIGHT
+    val directions: Array[Cell] = new Array(4)
+    val indices = generateSequence(directions.length)
+
+    directions(indices(0)) = maze.getCell(x, y - 1) // TOP
+    directions(indices(1)) = maze.getCell(x - 1, y) // LEFT
+    directions(indices(2)) = maze.getCell(x, y + 1) // BOTTOM
+    directions(indices(3)) = maze.getCell(x + 1, y) // RIGHT
+    for(d <- directions) {
+      if(d != null) neighbours += d
+    }
   }
 }

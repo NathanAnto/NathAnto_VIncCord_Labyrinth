@@ -4,9 +4,14 @@ import hevs.graphics.FunGraphics
 import menu.Button
 
 import java.awt.Color
-import scala.reflect.ClassTag
 
 class MenuDrawer(fg: FunGraphics) {
+
+  def drawTitle(x: Int, y: Int, text: String): Unit = {
+    fg.setColor(Color.BLACK)
+    fg.drawString(x, y, text,Color.BLACK, 20)
+  }
+
   /**
    * Draw a created [[Button]]
    * @param btn [[Button]] that will be drawn

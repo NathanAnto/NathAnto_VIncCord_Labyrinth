@@ -1,3 +1,3 @@
 package general
 
-case class Passage(cell1: Cell, cell2: Cell)
+case class Passage(cells: Set[Cell])

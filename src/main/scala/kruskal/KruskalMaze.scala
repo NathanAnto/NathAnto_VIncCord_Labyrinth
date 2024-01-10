@@ -12,13 +12,18 @@ class KruskalMaze(override val dimensions: Int) extends general.Maze {
     createPassages()
   }
 
+  /**
+   * Generate all the possible passages
+   * for the Kruskal algorithm
+   */
   private def createPassages(): Unit = {
     // Get all passages and cell neighbours
     for (cell <- cells; n <- cell.neighbours) {
       connections += Set(cell)
-      cell.getNeighbours(this)
-      if ((!passages.contains(Passage(cell, n)) || !passages.contains(Passage(n, cell))) && n != null) {
-        passages += Passage(cell, n)
+      cell.findNeighbours(this)
+
+      if ((!passages.contains(Passage(Set(cell, n))) || !passages.contains(Passage(Set(n, cell)))) && n != null) {
+        passages += Passage(Set(cell, n))
       }
     }
   }
@@ -34,10 +39,5 @@ class KruskalMaze(override val dimensions: Int) extends general.Maze {
     val p = passages.toIndexedSeq(num)
     passages -= p
     p
-  }
-
-  def removePassage(cell1: Cell, cell2: Cell): Unit = {
-    passages -= Passage(cell1, cell2)
-    passages -= Passage(cell2, cell1)
   }
 }

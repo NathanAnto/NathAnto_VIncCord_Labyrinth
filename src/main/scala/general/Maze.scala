@@ -6,8 +6,11 @@ import scala.util.Random
 class Maze(val dimensions: Int = 5) {
 
   protected var cells: Set[Cell] = Set()
-  private var usablePassages: Set[Passage] = Set()
+  var usablePassages: Set[Passage] = Set()
 
+  /**
+   * Create the cells for the maze
+   */
   def create(): Unit = {
     createCells()
   }
@@ -18,7 +21,7 @@ class Maze(val dimensions: Int = 5) {
       val c = new Cell(x, y)
       cells += c
     }
-    for(c <- cells) c.getNeighbours(this)
+    for(c <- cells) c.findNeighbours(this)
   }
 
   private def isInDimensions(x:Int, y:Int): Boolean =
@@ -37,6 +40,11 @@ class Maze(val dimensions: Int = 5) {
     cells.iterator.drop(num).next
   }
 
+  /**
+   * Adds a passage to a set to keep track of possible
+   * moves. (Used for Game and Resolution modes)
+   * @param passage The usable passage
+   */
   def addUsedPassage(passage: Passage): Unit = {
     usablePassages += passage
   }
