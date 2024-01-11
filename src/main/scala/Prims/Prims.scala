@@ -9,7 +9,7 @@ class Prims(mode: String = Mode.GENERATION) {
   val maze: PrimsMaze = new PrimsMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(500, "Prims", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*10, "Prims", maze)
 
   var visited: Set[Cell] = Set()
 
@@ -26,17 +26,17 @@ class Prims(mode: String = Mode.GENERATION) {
           mazeDrawer.drawCell(l, Color.red)
       }
     }
-    var nextcell: Cell = maze.getRandomFrontier
-    if(nextcell == null) return
+    val nextCell: Cell = maze.getRandomFrontier
+    if(nextCell == null) return
 
-    visited += nextcell
+    visited += nextCell
 
     // Find a neighbour that has already been visited
-    for(n <- nextcell.neighbours) {
+    for(n <- nextCell.neighbours) {
         if(visited.contains(n)) {
-          mazeDrawer.drawCells(nextcell,n)
-          if(mode == Mode.GENERATION) Thread.sleep(100)
-          primsfrontier(nextcell)
+          mazeDrawer.drawCells(nextCell,n)
+          if(mode == Mode.GENERATION) Thread.sleep(10)
+          primsfrontier(nextCell)
           return
         }
     }

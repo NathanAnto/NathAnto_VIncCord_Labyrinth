@@ -6,7 +6,6 @@ import hevs.graphics.FunGraphics
 import java.awt.event.{MouseAdapter, MouseEvent}
 
 class Menu {
-  // TODO: Rewrite menu code
   val fg = new FunGraphics(300, 300, "Menu")
   private val md = new MenuDrawer(fg)
 

@@ -10,7 +10,7 @@ class DFS(mode: String = Mode.GENERATION) {
   val maze: Maze = new Maze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(500, "DFS", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*10, "DFS", maze)
 
   backtracker(maze.getCell(
     Random.nextInt(MAZEDIMENSIONS),

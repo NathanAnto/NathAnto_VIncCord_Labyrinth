@@ -12,7 +12,7 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
   private val WALLSIZE = math.min(ratio/2, ratio - 1)
 
   // Draw black bg
-  def drawBlackBackground() = {
+  private def drawBlackBackground(): Unit = {
     fg.setColor(Color.black)
     for(y <- 0 until fg.height; x <- 0 until fg.width)
       fg.setPixel(x,y)
@@ -24,7 +24,7 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
    * @param v value of cell position
    * @return value based on window size
    */
-  private def getRealValue(v: Int): Int = v * ratio + WALLSIZE / 2
+  private def getRealValue(v: Int): Int = v * ratio + WALLSIZE/2
 
 
   def drawCell(cell: Cell): Unit = {
