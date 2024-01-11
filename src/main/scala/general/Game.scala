@@ -1,11 +1,17 @@
 package general
-
+import scala.sys.process._
+import java.io.File
 import hevs.graphics.FunGraphics
 
 import java.awt.Color
 import java.awt.event.{KeyAdapter, KeyEvent}
 
 class Game(maze: Maze, mazeDrawer: MazeDrawer) {
+  // launch song
+  var song: AudioPlayer = new AudioPlayer("general/buckshotost.wav")
+  var winsong: AudioPlayer = new AudioPlayer("general/win3.wav")
+  song.play()
+
   val fg: FunGraphics = mazeDrawer.fg
 
   val startCell: Cell = maze.getCell(0,0)
@@ -13,9 +19,11 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
 
   private var playerX: Int = 0
   private var playerY: Int = 0
+  var fgame = true
 
   mazeDrawer.drawPlayer(playerX, playerY)
   mazeDrawer.drawCell(endCell, Color.red)
+
 
   // Do something when a key has been pressed
   fg.setKeyManager(new KeyAdapter() { // Will be called when a key has been pressed
@@ -63,7 +71,31 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
 
       mazeDrawer.drawPlayer(playerX,playerY)
 
-      if(playerX == endCell.x && playerY == endCell.y) println("YOU WIN!!")
+      if(playerX == endCell.x && playerY == endCell.y && fgame){
+        song.stop()
+        println("YOU WIN!!")
+        fgame = false
+        // Spécifiez le chemin relatif du fichier batch par rapport au répertoire du projet
+        val relativeBatchFilePath = "src/main/scala/general/volume.bat"
+
+        // Spécifiez le chemin complet du fichier batch que vous souhaitez exécuter
+        val batchFilePath = new File(relativeBatchFilePath).getAbsolutePath
+
+        // Créez un objet ProcessBuilder en utilisant le chemin du fichier batch
+        val processBuilder = Process(Seq("cmd", "/c", batchFilePath))
+
+        // Exécutez le processus
+        val process = processBuilder.run()
+
+        // Attendez que le processus se termine et obtenez le code de sortie
+        val exitCode = process.exitValue()
+
+        // Affichez le code de sortie
+        println(s"Le fichier batch a été exécuté avec le code de sortie : $exitCode")
+
+        winsong.play()
+
+      }
     }
   })
 }

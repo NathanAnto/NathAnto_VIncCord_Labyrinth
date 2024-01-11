@@ -3,11 +3,11 @@ package kruskal
 import general.{Cell, Game, MazeDrawer, Mode}
 
 class Kruskal(mode: String = Mode.GENERATION) {
-  val MAZEDIMENSIONS = 10
+  val MAZEDIMENSIONS = 100
   val maze: KruskalMaze = new KruskalMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer = new MazeDrawer(500, "Kruskal", maze)
+  val mazeDrawer = new MazeDrawer(1000, "Kruskal", maze)
 
   kruskal();
 
