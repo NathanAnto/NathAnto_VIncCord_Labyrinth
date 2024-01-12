@@ -1,17 +1,25 @@
 package general
 
 import java.awt.Color
-import scala.collection.mutable
 
 class Resolution(mazeDrawer: MazeDrawer) {
-
-  private def reconstruct_path(startCell: Cell, endCell: Cell): Unit = {
+  private def reconstructPath(startCell: Cell, endCell: Cell): Unit = {
+    var cellsToEnd: IndexedSeq[Cell] = IndexedSeq()
     var nextParent: Cell = endCell
+
     while(true) {
-      mazeDrawer.drawCells(nextParent, nextParent.parent, Color.magenta)
+      // add to start of list
+      cellsToEnd = nextParent +: cellsToEnd
+
       nextParent = nextParent.parent
-      Thread.sleep(100)
-      if(nextParent == startCell) return
+
+      if(nextParent == startCell) {
+        for(c <- cellsToEnd) {
+          Thread.sleep(100)
+          mazeDrawer.drawCells(c.parent, c, Color.magenta)
+        }
+        return
+      }
     }
   }
 
@@ -26,7 +34,7 @@ class Resolution(mazeDrawer: MazeDrawer) {
       openList -= current
       // If current is end cell retrace path (END)
       if(current == endCell) {
-        reconstruct_path(startCell, endCell)
+        reconstructPath(startCell, endCell)
         return
       }
 
@@ -67,7 +75,6 @@ class Resolution(mazeDrawer: MazeDrawer) {
         }
       }
       current = lowest
-      // Restart
     }
   }
 }
