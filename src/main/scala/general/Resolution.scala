@@ -2,7 +2,7 @@ package general
 
 import java.awt.Color
 
-class Resolution(mazeDrawer: MazeDrawer) {
+class Resolution(maze: Maze, mazeDrawer: MazeDrawer) {
   private def reconstructPath(startCell: Cell, endCell: Cell): Unit = {
     var cellsToEnd: IndexedSeq[Cell] = IndexedSeq()
     var nextParent: Cell = endCell
@@ -15,8 +15,8 @@ class Resolution(mazeDrawer: MazeDrawer) {
 
       if(nextParent == startCell) {
         for(c <- cellsToEnd) {
-          Thread.sleep(100)
-          mazeDrawer.drawCells(c.parent, c, Color.magenta)
+          Thread.sleep(50)
+          mazeDrawer.drawCells(Passage(Set(c.parent, c)), Color.magenta)
         }
         return
       }
@@ -42,13 +42,11 @@ class Resolution(mazeDrawer: MazeDrawer) {
       closedList += current
       mazeDrawer.drawCell(current, Color.cyan)
 
-      Thread.sleep(100)
-//      Thread.sleep(500)
-      println(current.usableNeighbours)
+//      Thread.sleep(100)
       // Find all current cells neighbours and add them to openList
-      for(n <- current.usableNeighbours) {
+      for(n <- current.neighbours) {
         // Calculate all the open neighbour parameters (g, h, f)
-        if(!closedList.contains(n)) {
+        if(!closedList.contains(n) && maze.usablePassages.contains(Passage(Set(current, n))) ) {
           n.g = current.g + 1
           n.h = math.abs(n.x - endCell.x) + math.abs(n.y - endCell.y)
           n.f = n.g + n.h
@@ -58,7 +56,7 @@ class Resolution(mazeDrawer: MazeDrawer) {
 
           // Add the to openList
           openList += n
-          mazeDrawer.drawCells(current, n, Color.ORANGE)
+          mazeDrawer.drawCells(Passage(Set(current, n)), Color.ORANGE)
         }
       }
 

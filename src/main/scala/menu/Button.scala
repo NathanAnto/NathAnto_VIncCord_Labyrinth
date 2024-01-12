@@ -13,6 +13,12 @@ class Button(var x: Int, var y: Int, var text: String, runner: Runnable){
     th.setName(runner.toString)
     th.start()
   }
+
+  /**
+   * @param posX horizontal coordinate of click
+   * @param posY vertical coordinate of click
+   * @return [[Boolean]] if clicked or not
+   */
   def clicked(posX: Int, posY: Int): Boolean = posX > x && posX < x + width && posY > y && posY < y + height
 }
 
@@ -32,13 +38,4 @@ object Button {
     buttons = buttons :+ btn
     btn
   }
-
-  /**
-   *
-   * @param btn [[Button]] that will be checked for the click
-   * @param posX horizontal coordinate of click
-   * @param posY vertical coordinate of click
-   * @return [[Boolean]] if clicked or not
-   */
-  def clicked(btn: Button, posX: Int, posY: Int): Boolean = btn.clicked(posX, posY)
 }

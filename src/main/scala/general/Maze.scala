@@ -42,7 +42,7 @@ class Maze(val dimensions: Int = 5) {
 
   /**
    * Adds a passage to a set to keep track of possible
-   * moves. (Used for Game and Resolution modes)
+   * moves. (Used for Game mode)
    * @param passage The usable passage
    */
   def addUsedPassage(passage: Passage): Unit = {

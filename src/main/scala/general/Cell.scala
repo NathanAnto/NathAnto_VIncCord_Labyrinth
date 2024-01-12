@@ -4,7 +4,6 @@ import scala.util.Random
 
 class Cell(val x: Int, val y: Int) {
   var neighbours: Set[Cell] = Set()
-  var usableNeighbours: Set[Cell] = Set()
 
   // A* parameters
   var g: Int = 0
@@ -13,6 +12,20 @@ class Cell(val x: Int, val y: Int) {
   var parent: Cell = _
 
   override def toString: String = s"Cell($x,$y) [$g, $h, $f]"
+
+  def findNeighbours(maze: Maze): Unit = {
+    // Random neighbour order
+    val directions: Array[Cell] = new Array(4)
+    val indices = generateSequence(directions.length)
+
+    directions(indices(0)) = maze.getCell(x, y - 1) // TOP
+    directions(indices(1)) = maze.getCell(x - 1, y) // LEFT
+    directions(indices(2)) = maze.getCell(x, y + 1) // BOTTOM
+    directions(indices(3)) = maze.getCell(x + 1, y) // RIGHT
+    for(d <- directions) {
+      if(d != null) neighbours += d
+    }
+  }
 
   /**
    * Generates list of numbers from 0 to 'length'
@@ -30,25 +43,5 @@ class Cell(val x: Int, val y: Int) {
       res(index) = num;
     }
     res
-  }
-
-//  override def toString: String = s"Cell($x, $y)"
-  def addUsableNeighbour(n: Cell) = {
-    usableNeighbours += n
-    n.usableNeighbours += this
-  }
-
-  def findNeighbours(maze: Maze) = {
-    // Random neighbour order
-    val directions: Array[Cell] = new Array(4)
-    val indices = generateSequence(directions.length)
-
-    directions(indices(0)) = maze.getCell(x, y - 1) // TOP
-    directions(indices(1)) = maze.getCell(x - 1, y) // LEFT
-    directions(indices(2)) = maze.getCell(x, y + 1) // BOTTOM
-    directions(indices(3)) = maze.getCell(x + 1, y) // RIGHT
-    for(d <- directions) {
-      if(d != null) neighbours += d
-    }
   }
 }

@@ -11,12 +11,12 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
   val startCell: Cell = maze.getCell(0,0)
   val endCell: Cell = maze.getCell(maze.dimensions-1, maze.dimensions-1)
 
-  val res = new Resolution(mazeDrawer)
+  val res = new Resolution(maze, mazeDrawer)
 
-  private var playerX: Int = 0
-  private var playerY: Int = 0
+  private var playerX: Int = startCell.x
+  private var playerY: Int = startCell.y
 
-  mazeDrawer.drawPlayer(playerX, playerY)
+  mazeDrawer.drawPlayer(maze.getCell(playerX, playerY))
   mazeDrawer.drawCell(endCell, Color.red)
 
   // Do something when a key has been pressed
@@ -28,9 +28,8 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
           maze.getCell(playerX, playerY-1)
         )))) {
           playerY -= 1
-          mazeDrawer.drawPlayer(playerX, playerY, Direction.UP)
+          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.UP)
         }
-
       }
       if (e.getKeyCode == KeyEvent.VK_S) {
         if(maze.usablePassages.contains(Passage(Set(
@@ -38,7 +37,7 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
           maze.getCell(playerX, playerY+1)
         )))) {
           playerY += 1
-          mazeDrawer.drawPlayer(playerX, playerY, Direction.DOWN)
+          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.DOWN)
         }
       }
       if (e.getKeyCode == KeyEvent.VK_A) {
@@ -47,7 +46,7 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
           maze.getCell(playerX-1, playerY)
         )))) {
           playerX -= 1
-          mazeDrawer.drawPlayer(playerX, playerY, Direction.LEFT)
+          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.LEFT)
         }
       }
       if (e.getKeyCode == KeyEvent.VK_D) {
@@ -56,7 +55,7 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
           maze.getCell(playerX+1, playerY)
         )))) {
           playerX += 1
-          mazeDrawer.drawPlayer(playerX, playerY, Direction.RIGHT)
+          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.RIGHT)
         }
       }
       if (e.getKeyCode == KeyEvent.VK_R) {
@@ -66,7 +65,7 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
       mazeDrawer.drawCell(startCell, Color.green)
       mazeDrawer.drawCell(endCell, Color.red)
 
-      mazeDrawer.drawPlayer(playerX,playerY)
+      mazeDrawer.drawPlayer(maze.getCell(playerX,playerY))
 
       if(playerX == endCell.x && playerY == endCell.y) println("YOU WIN!!")
     }

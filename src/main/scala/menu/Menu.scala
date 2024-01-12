@@ -14,7 +14,6 @@ class Menu {
   md.drawButton(Button.createButton(100, 40, "DFS", new dfs.Runner(Mode.GENERATION)))
   md.drawButton(Button.createButton(180, 40, "Kruskal", new kruskal.Runner(Mode.GENERATION)))
 
-
   md.drawTitle(20, 100, "Maze game")
   md.drawButton(Button.createButton(20, 110, "Prims", new Prims.Runner(Mode.GAME)))
   md.drawButton(Button.createButton(100, 110, "DFS", new dfs.Runner(Mode.GAME)))
@@ -33,7 +32,7 @@ class Menu {
       println(s"Mouse position $posX - $posY")
 
       for(btn <- Button.buttons) {
-        if(Button.clicked(btn, posX, posY)) {
+        if(btn.clicked(posX, posY)) {
           btn.launch()
         }
       }

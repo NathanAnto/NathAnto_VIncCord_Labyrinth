@@ -1,15 +1,15 @@
 package Prims
 
-import general.{Cell, Game, MazeDrawer, Mode}
+import general.{Cell, Game, MazeDrawer, Mode, Passage}
 
 import java.awt.Color
 
 class Prims(mode: String = Mode.GENERATION) {
-  val MAZEDIMENSIONS = 10
+  val MAZEDIMENSIONS = 50
   val maze: PrimsMaze = new PrimsMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*50, "Prims", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(700, "Prims", maze)
 
   var visited: Set[Cell] = Set()
 
@@ -34,8 +34,8 @@ class Prims(mode: String = Mode.GENERATION) {
     // Find a neighbour that has already been visited
     for(n <- nextCell.neighbours) {
         if(visited.contains(n)) {
-          mazeDrawer.drawCells(nextCell,n)
-          nextCell.addUsableNeighbour(n)
+          mazeDrawer.drawCells(Passage(Set(nextCell,n)))
+
           if(mode == Mode.GENERATION) Thread.sleep(10)
           primsfrontier(nextCell)
           return

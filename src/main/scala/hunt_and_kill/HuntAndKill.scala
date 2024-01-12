@@ -1,6 +1,6 @@
 package hunt_and_kill
 
-import general.{Cell, Maze, MazeDrawer}
+import general.{Cell, Maze, MazeDrawer, Passage}
 
 import scala.collection.mutable
 import scala.util.Random
@@ -31,7 +31,7 @@ class HuntAndKill {
 
     for(pos <- location.neighbours) {
       if (!visited.contains(pos) && pos != null) {
-        mazeDrawer.drawCells(pos, location)
+        mazeDrawer.drawCells(Passage(Set(pos, location)))
         huntAndKill(pos, visited)
       }
     }
@@ -47,7 +47,7 @@ class HuntAndKill {
       if (!visited.contains(cell)) {
         for(n <- cell.neighbours) {
           if(visited.contains(n)) {
-            mazeDrawer.drawCells(n, cell)
+            mazeDrawer.drawCells(Passage(Set(n, cell)))
             huntAndKill(cell, visited)
             return
           }

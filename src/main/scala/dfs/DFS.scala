@@ -1,7 +1,8 @@
 package dfs
 
-import general.{Cell, Game, Maze, MazeDrawer, Mode, Resolution}
+import general.{Cell, Game, Maze, MazeDrawer, Mode, Passage, Resolution}
 
+import java.awt.Color
 import scala.collection.mutable
 import scala.util.Random
 
@@ -23,14 +24,13 @@ class DFS(mode: String = Mode.GENERATION) {
    * @param visited [[Set]] of visited cells
    */
   private def backtracker(location: Cell, visited: mutable.Set[Cell]): Unit = {
-    visited += location;
+    visited += location
 
     for(pos <- location.neighbours) {
       if(!visited.contains(pos) && pos != null) {
-        // TODO: Find a way to get a non graphical result
-        mazeDrawer.drawCells(pos, location)
-        pos.addUsableNeighbour(location)
-        if(mode == Mode.GENERATION) Thread.sleep(100)
+        mazeDrawer.drawCells(Passage(Set(pos, location)))
+        if(mode == Mode.GENERATION) Thread.sleep(500)
+        mazeDrawer.drawCells(Passage(Set(pos, location)))
         backtracker(pos, visited)
       }
     }

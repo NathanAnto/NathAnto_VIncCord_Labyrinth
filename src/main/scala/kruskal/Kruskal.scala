@@ -1,6 +1,6 @@
 package kruskal
 
-import general.{Cell, Game, MazeDrawer, Mode}
+import general.{Cell, Game, MazeDrawer, Mode, Passage}
 
 class Kruskal(mode: String = Mode.GENERATION) {
   val MAZEDIMENSIONS = 10
@@ -14,7 +14,8 @@ class Kruskal(mode: String = Mode.GENERATION) {
   def kruskal(): Unit = {
     // loop over every possible passage
     do {
-      val passageCells = maze.getRandomPassage.cells.toIndexedSeq
+      val passages = maze.getRandomPassage
+      val passageCells = passages.cells.toIndexedSeq
       var connection1: Set[Cell] = Set()
       var connection2: Set[Cell] = Set()
       var connected: Boolean = false
@@ -38,8 +39,7 @@ class Kruskal(mode: String = Mode.GENERATION) {
         maze.connections += newConnection
 
 
-        passageCells(0).addUsableNeighbour(passageCells(1))
-        mazeDrawer.drawCells(passageCells(0), passageCells(1))
+        mazeDrawer.drawCells(passages)
         if(mode == Mode.GENERATION) Thread.sleep(100)
       }
     } while(maze.connections.size > 1)
