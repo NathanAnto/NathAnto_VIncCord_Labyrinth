@@ -4,6 +4,15 @@ import scala.util.Random
 
 class Cell(val x: Int, val y: Int) {
   var neighbours: Set[Cell] = Set()
+  var usableNeighbours: Set[Cell] = Set()
+
+  // A* parameters
+  var g: Int = 0
+  var h: Int = 0
+  var f: Int = 0
+  var parent: Cell = _
+
+  override def toString: String = s"Cell($x,$y) [$g, $h, $f]"
 
   /**
    * Generates list of numbers from 0 to 'length'
@@ -23,7 +32,11 @@ class Cell(val x: Int, val y: Int) {
     res
   }
 
-  override def toString: String = s"Cell($x, $y)"
+//  override def toString: String = s"Cell($x, $y)"
+  def addUsableNeighbour(n: Cell) = {
+    usableNeighbours += n
+    n.usableNeighbours += this
+  }
 
   def findNeighbours(maze: Maze) = {
     // Random neighbour order

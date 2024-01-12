@@ -3,11 +3,11 @@ package kruskal
 import general.{Cell, Game, MazeDrawer, Mode}
 
 class Kruskal(mode: String = Mode.GENERATION) {
-  val MAZEDIMENSIONS = 50
+  val MAZEDIMENSIONS = 10
   val maze: KruskalMaze = new KruskalMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer = new MazeDrawer(MAZEDIMENSIONS*10, "Kruskal", maze)
+  val mazeDrawer = new MazeDrawer(MAZEDIMENSIONS*50, "Kruskal", maze)
 
   kruskal();
 
@@ -37,6 +37,8 @@ class Kruskal(mode: String = Mode.GENERATION) {
         val newConnection: Set[Cell] = conn1.get ++ conn2.get
         maze.connections += newConnection
 
+
+        passageCells(0).addUsableNeighbour(passageCells(1))
         mazeDrawer.drawCells(passageCells(0), passageCells(1))
         if(mode == Mode.GENERATION) Thread.sleep(100)
       }

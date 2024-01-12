@@ -43,19 +43,19 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
    * @param startCell cell from which to draw
    * @param endCell cell to draw to
    */
-  def drawCells(startCell: Cell, endCell: Cell): Unit = {
+  def drawCells(startCell: Cell, endCell: Cell, color: Color = Color.white): Unit = {
     if (startCell.x < endCell.x) {
       maze.addUsedPassage(Passage(Set(endCell, startCell)))
-      drawCells(startCell, Direction.LEFT)
+      drawCells(startCell, Direction.LEFT, color)
     } else if (startCell.x > endCell.x) {
       maze.addUsedPassage(Passage(Set(endCell, startCell)))
-      drawCells(endCell, Direction.RIGHT)
+      drawCells(endCell, Direction.RIGHT, color)
     } else if (startCell.y < endCell.y) {
       maze.addUsedPassage(Passage(Set(endCell, startCell)))
-      drawCells(startCell, Direction.UP)
+      drawCells(startCell, Direction.UP, color)
     } else if (startCell.y > endCell.y) {
       maze.addUsedPassage(Passage(Set(endCell, startCell)))
-      drawCells(endCell, Direction.DOWN)
+      drawCells(endCell, Direction.DOWN, color)
     }
   }
 
@@ -65,17 +65,17 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
    * @param startCell cell from which to draw
    * @param direction direction to draw from startCell
    */
-  def drawCells(startCell: Cell, direction: String): Unit = {
-    fg.setColor(Color.white)
+  def drawCells(startCell: Cell, direction: String, color: Color): Unit = {
+    fg.setColor(color)
 
     val x: Int = getRealValue(startCell.x)
     val y: Int = getRealValue(startCell.y)
 
     direction match {
-      case Direction.LEFT =>  fg.drawFillRect(x, y, ratio*2-WALLSIZE, ratio-WALLSIZE)
-      case Direction.RIGHT => fg.drawFillRect(x, y, ratio*2-WALLSIZE, ratio-WALLSIZE)
-      case Direction.UP =>    fg.drawFillRect(x, y, ratio-WALLSIZE, ratio*2-WALLSIZE)
-      case Direction.DOWN =>  fg.drawFillRect(x, y, ratio-WALLSIZE, ratio*2-WALLSIZE)
+      case Direction.LEFT =>  fg.drawFillRect(x, y, ratio * 2 - WALLSIZE, ratio - WALLSIZE)
+      case Direction.RIGHT => fg.drawFillRect(x, y, ratio * 2 - WALLSIZE, ratio - WALLSIZE)
+      case Direction.UP =>    fg.drawFillRect(x, y, ratio - WALLSIZE, ratio * 2 - WALLSIZE)
+      case Direction.DOWN =>  fg.drawFillRect(x, y, ratio - WALLSIZE, ratio * 2 - WALLSIZE)
       case _ => println(s"NOT A VALID DIRECTION! '$direction'")
     }
   }

@@ -1,6 +1,6 @@
 package dfs
 
-import general.{Cell, Game, Maze, MazeDrawer, Mode}
+import general.{Cell, Game, Maze, MazeDrawer, Mode, Resolution}
 
 import scala.collection.mutable
 import scala.util.Random
@@ -10,7 +10,7 @@ class DFS(mode: String = Mode.GENERATION) {
   val maze: Maze = new Maze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*10, "DFS", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*50, "DFS", maze)
 
   backtracker(maze.getCell(
     Random.nextInt(MAZEDIMENSIONS),
@@ -29,6 +29,7 @@ class DFS(mode: String = Mode.GENERATION) {
       if(!visited.contains(pos) && pos != null) {
         // TODO: Find a way to get a non graphical result
         mazeDrawer.drawCells(pos, location)
+        pos.addUsableNeighbour(location)
         if(mode == Mode.GENERATION) Thread.sleep(100)
         backtracker(pos, visited)
       }
@@ -37,7 +38,4 @@ class DFS(mode: String = Mode.GENERATION) {
 
   // If in game mode, start game
   if(mode == Mode.GAME) new Game(maze, mazeDrawer)
-
-  // TODO: Add pathfinding
-//  if(mode == Mode.RESOLUTION) new DFSResolution(maze)
 }
