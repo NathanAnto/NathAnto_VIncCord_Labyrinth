@@ -9,7 +9,7 @@ import java.awt.event.{KeyAdapter, KeyEvent}
 class Game(maze: Maze, mazeDrawer: MazeDrawer) {
   // launch song
   var song: AudioPlayer = new AudioPlayer("general/buckshotost.wav")
-  var winsong: AudioPlayer = new AudioPlayer("general/win3.wav")
+  var winsong: AudioPlayer = new AudioPlayer("general/win.wav")
   song.play()
 
   val fg: FunGraphics = mazeDrawer.fg
@@ -75,6 +75,7 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
         song.stop()
         println("YOU WIN!!")
         fgame = false
+
         // Spécifiez le chemin relatif du fichier batch par rapport au répertoire du projet
         val relativeBatchFilePath = "src/main/scala/general/volume.bat"
 
@@ -92,7 +93,9 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
 
         // Affichez le code de sortie
         println(s"Le fichier batch a été exécuté avec le code de sortie : $exitCode")
+        mazeDrawer.winimage()
 
+        // lancement du son
         winsong.play()
 
       }
