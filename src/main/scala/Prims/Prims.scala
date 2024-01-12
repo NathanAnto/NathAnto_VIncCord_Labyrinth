@@ -9,7 +9,7 @@ class Prims(mode: String = Mode.GENERATION) {
   val maze: PrimsMaze = new PrimsMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*10, "Prims", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*50, "Prims", maze)
 
   var visited: Set[Cell] = Set()
 
@@ -35,6 +35,7 @@ class Prims(mode: String = Mode.GENERATION) {
     for(n <- nextCell.neighbours) {
         if(visited.contains(n)) {
           mazeDrawer.drawCells(nextCell,n)
+          nextCell.addUsableNeighbour(n)
           if(mode == Mode.GENERATION) Thread.sleep(10)
           primsfrontier(nextCell)
           return

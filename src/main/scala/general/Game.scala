@@ -11,6 +11,8 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
   val startCell: Cell = maze.getCell(0,0)
   val endCell: Cell = maze.getCell(maze.dimensions-1, maze.dimensions-1)
 
+  val res = new Resolution(mazeDrawer)
+
   private var playerX: Int = 0
   private var playerY: Int = 0
 
@@ -56,6 +58,9 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
           playerX += 1
           mazeDrawer.drawPlayer(playerX, playerY, Direction.RIGHT)
         }
+      }
+      if (e.getKeyCode == KeyEvent.VK_R) {
+        res.aStar(startCell, endCell)
       }
 
       mazeDrawer.drawCell(startCell, Color.green)

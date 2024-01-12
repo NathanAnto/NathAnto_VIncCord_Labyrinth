@@ -20,11 +20,9 @@ class Menu {
   md.drawButton(Button.createButton(100, 110, "DFS", new dfs.Runner(Mode.GAME)))
   md.drawButton(Button.createButton(180, 110, "Kruskal", new kruskal.Runner(Mode.GAME)))
 
-
-  md.drawTitle(20, 170, "Maze resolution")
-  md.drawButton(Button.createButton(20, 180, "Prims", new Prims.Runner(Mode.RESOLUTION)))
-  md.drawButton(Button.createButton(100, 180, "DFS", new dfs.Runner(Mode.RESOLUTION)))
-  md.drawButton(Button.createButton(180, 180, "Kruskal", new kruskal.Runner(Mode.RESOLUTION)))
+  md.drawTitle(20, 170, "Controls")
+  md.drawText(20, 190, "MOVE: W,A,S,D")
+  md.drawText(20, 210, "SHOW RESOLUTION: R")
 
   fg.addMouseListener(new MouseAdapter() {
     override def mouseClicked(event: MouseEvent): Unit = {
