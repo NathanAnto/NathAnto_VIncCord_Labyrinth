@@ -23,37 +23,37 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
   fg.setKeyManager(new KeyAdapter() { // Will be called when a key has been pressed
     override def keyPressed(e: KeyEvent): Unit = {
       if (e.getKeyCode == KeyEvent.VK_W) {
-        if(maze.usablePassages.contains(Passage(Set(
+        if(maze.getUsablePassages.contains(maze.getUsablePassage(
           maze.getCell(playerX, playerY),
           maze.getCell(playerX, playerY-1)
-        )))) {
+        ))) {
           playerY -= 1
           mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.UP)
         }
       }
       if (e.getKeyCode == KeyEvent.VK_S) {
-        if(maze.usablePassages.contains(Passage(Set(
+        if(maze.getUsablePassages.contains(maze.getUsablePassage(
           maze.getCell(playerX, playerY),
           maze.getCell(playerX, playerY+1)
-        )))) {
+        ))) {
           playerY += 1
           mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.DOWN)
         }
       }
       if (e.getKeyCode == KeyEvent.VK_A) {
-        if(maze.usablePassages.contains(Passage(Set(
+        if(maze.getUsablePassages.contains(maze.getUsablePassage(
           maze.getCell(playerX, playerY),
           maze.getCell(playerX-1, playerY)
-        )))) {
+        ))) {
           playerX -= 1
           mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.LEFT)
         }
       }
       if (e.getKeyCode == KeyEvent.VK_D) {
-        if(maze.usablePassages.contains(Passage(Set(
+        if(maze.getUsablePassages.contains(maze.getUsablePassage(
           maze.getCell(playerX, playerY),
           maze.getCell(playerX+1, playerY)
-        )))) {
+        ))) {
           playerX += 1
           mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.RIGHT)
         }

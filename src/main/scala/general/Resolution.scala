@@ -16,7 +16,7 @@ class Resolution(maze: Maze, mazeDrawer: MazeDrawer) {
       if(nextParent == startCell) {
         for(c <- cellsToEnd) {
           Thread.sleep(50)
-          mazeDrawer.drawCells(Passage(Set(c.parent, c)), Color.magenta)
+          mazeDrawer.drawCells(Array(c.parent, c), Color.magenta)
         }
         return
       }
@@ -46,7 +46,7 @@ class Resolution(maze: Maze, mazeDrawer: MazeDrawer) {
       // Find all current cells neighbours and add them to openList
       for(n <- current.neighbours) {
         // Calculate all the open neighbour parameters (g, h, f)
-        if(!closedList.contains(n) && maze.usablePassages.contains(Passage(Set(current, n))) ) {
+        if(!closedList.contains(n) && maze.getUsablePassages.contains(maze.getUsablePassage(current, n))) {
           n.g = current.g + 1
           n.h = math.abs(n.x - endCell.x) + math.abs(n.y - endCell.y)
           n.f = n.g + n.h
@@ -56,7 +56,7 @@ class Resolution(maze: Maze, mazeDrawer: MazeDrawer) {
 
           // Add the to openList
           openList += n
-          mazeDrawer.drawCells(Passage(Set(current, n)), Color.ORANGE)
+          mazeDrawer.drawCells(Array(current, n), Color.ORANGE)
         }
       }
 

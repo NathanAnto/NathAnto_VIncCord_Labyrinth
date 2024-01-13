@@ -1,3 +1,5 @@
 package general
 
-case class Passage(cells: Set[Cell])
+class Passage(startCell: Cell, endCell: Cell) {
+  val cells: Array[Cell] = Array(startCell, endCell)
+}

@@ -6,7 +6,7 @@ import scala.util.Random
 class Maze(val dimensions: Int = 5) {
 
   protected var cells: Set[Cell] = Set()
-  var usablePassages: Set[Passage] = Set()
+  private var usablePassages: Set[Passage] = Set()
 
   /**
    * Create the cells for the maze
@@ -34,18 +34,31 @@ class Maze(val dimensions: Int = 5) {
     }
     null
   }
-  @unused
-  def getRandomCell: Cell = {
-    val num = Random.nextInt(cells.size)
-    cells.iterator.drop(num).next
-  }
+
+  def getUsablePassages: Set[Passage] = usablePassages
 
   /**
    * Adds a passage to a set to keep track of possible
    * moves. (Used for Game mode)
    * @param passage The usable passage
    */
-  def addUsedPassage(passage: Passage): Unit = {
-    usablePassages += passage
+  def addUsablePassage(startCell: Cell, endCell: Cell): Unit = {
+    if(getUsablePassage(startCell, endCell) == null)
+      usablePassages += new Passage(startCell, endCell)
+  }
+
+  /**
+   * Get a usable [[Passage]] by checking if both
+   * cells are in the same usable passage
+   * @param startCell [[Cell]]
+   * @param endCell  [[Cell]]
+   * @return Usable [[Passage]]
+   */
+  def getUsablePassage(startCell: Cell, endCell: Cell): Passage = {
+    usablePassages.foreach(p => {
+      if(p.cells.contains(startCell) && p.cells.contains(endCell))
+        return p
+    })
+    null
   }
 }

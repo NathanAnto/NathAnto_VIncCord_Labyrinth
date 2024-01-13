@@ -35,24 +35,24 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
   /**
    * Draw passage between the cells passed
    * as parameters.
-   * @param startCell cell from which to draw
-   * @param endCell cell to draw to
+   * @param cells cells to draw
+   * @param color Optional color
    */
-  def drawCells(p: Passage, color: Color = Color.white): Unit = {
-    val startCell = p.cells.toIndexedSeq(0)
-    val endCell = p.cells.toIndexedSeq(1)
+  def drawCells(cells: Array[Cell], color: Color = Color.white): Unit = {
+    val startCell = cells(0)
+    val endCell = cells(1)
 
     if (startCell.x < endCell.x) {
-      maze.addUsedPassage(Passage(Set(endCell, startCell)))
+      maze.addUsablePassage(startCell, endCell)
       drawCells(startCell, Direction.LEFT, color)
     } else if (startCell.x > endCell.x) {
-      maze.addUsedPassage(Passage(Set(endCell, startCell)))
+      maze.addUsablePassage(startCell, endCell)
       drawCells(endCell, Direction.RIGHT, color)
     } else if (startCell.y < endCell.y) {
-      maze.addUsedPassage(Passage(Set(endCell, startCell)))
+      maze.addUsablePassage(startCell, endCell)
       drawCells(startCell, Direction.UP, color)
     } else if (startCell.y > endCell.y) {
-      maze.addUsedPassage(Passage(Set(endCell, startCell)))
+      maze.addUsablePassage(startCell, endCell)
       drawCells(endCell, Direction.DOWN, color)
     }
   }

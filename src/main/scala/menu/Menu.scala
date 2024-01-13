@@ -6,18 +6,19 @@ import hevs.graphics.FunGraphics
 import java.awt.event.{MouseAdapter, MouseEvent}
 
 class Menu {
-  val fg = new FunGraphics(300, 300, "Menu")
+  private val fg = new FunGraphics(300, 300, "Menu")
   private val md = new MenuDrawer(fg)
+  private val MAZEDIMENSIONS = 10
 
   md.drawTitle(20, 30, "Maze generation")
-  md.drawButton(Button.createButton(20, 40, "Prims", new Prims.Runner(Mode.GENERATION)))
-  md.drawButton(Button.createButton(100, 40, "DFS", new dfs.Runner(Mode.GENERATION)))
-  md.drawButton(Button.createButton(180, 40, "Kruskal", new kruskal.Runner(Mode.GENERATION)))
+  md.drawButton(Button.createButton(20, 40, "Prims", new Prims.Runner(Mode.GENERATION, MAZEDIMENSIONS)))
+  md.drawButton(Button.createButton(100, 40, "DFS", new dfs.Runner(Mode.GENERATION, MAZEDIMENSIONS)))
+  md.drawButton(Button.createButton(180, 40, "Kruskal", new kruskal.Runner(Mode.GENERATION, MAZEDIMENSIONS)))
 
   md.drawTitle(20, 100, "Maze game")
-  md.drawButton(Button.createButton(20, 110, "Prims", new Prims.Runner(Mode.GAME)))
-  md.drawButton(Button.createButton(100, 110, "DFS", new dfs.Runner(Mode.GAME)))
-  md.drawButton(Button.createButton(180, 110, "Kruskal", new kruskal.Runner(Mode.GAME)))
+  md.drawButton(Button.createButton(20, 110, "Prims", new Prims.Runner(Mode.GAME,MAZEDIMENSIONS)))
+  md.drawButton(Button.createButton(100, 110, "DFS", new dfs.Runner(Mode.GAME,MAZEDIMENSIONS)))
+  md.drawButton(Button.createButton(180, 110, "Kruskal", new kruskal.Runner(Mode.GAME,MAZEDIMENSIONS)))
 
   md.drawTitle(20, 170, "Controls")
   md.drawText(20, 190, "MOVE: W,A,S,D")

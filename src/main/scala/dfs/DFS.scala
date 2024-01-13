@@ -6,8 +6,8 @@ import java.awt.Color
 import scala.collection.mutable
 import scala.util.Random
 
-class DFS(mode: String = Mode.GENERATION) {
-  val MAZEDIMENSIONS = 10
+class DFS(mode: String = Mode.GENERATION, dimensions: Int) {
+  val MAZEDIMENSIONS: Int = dimensions
   val maze: Maze = new Maze(MAZEDIMENSIONS)
   maze.create()
 
@@ -28,9 +28,8 @@ class DFS(mode: String = Mode.GENERATION) {
 
     for(pos <- location.neighbours) {
       if(!visited.contains(pos) && pos != null) {
-        mazeDrawer.drawCells(Passage(Set(pos, location)))
-        if(mode == Mode.GENERATION) Thread.sleep(500)
-        mazeDrawer.drawCells(Passage(Set(pos, location)))
+        if(mode == Mode.GENERATION) Thread.sleep(100)
+        mazeDrawer.drawCells(Array(pos, location))
         backtracker(pos, visited)
       }
     }

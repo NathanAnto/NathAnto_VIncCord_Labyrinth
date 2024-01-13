@@ -4,18 +4,18 @@ import general.{Cell, Game, MazeDrawer, Mode, Passage}
 
 import java.awt.Color
 
-class Prims(mode: String = Mode.GENERATION) {
-  val MAZEDIMENSIONS = 50
+class Prims(mode: String = Mode.GENERATION, dimensions: Int) {
+  val MAZEDIMENSIONS: Int = dimensions
   val maze: PrimsMaze = new PrimsMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(700, "Prims", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*50, "Prims", maze)
 
   var visited: Set[Cell] = Set()
 
-  primsfrontier(maze.getCell(0,0))
+  primsFrontier(maze.getCell(0,0))
 
-  def primsfrontier(location: Cell): Unit = {
+  private def primsFrontier(location: Cell): Unit = {
     visited += location
 
     // Get all neighbours that haven't been visited
@@ -34,10 +34,10 @@ class Prims(mode: String = Mode.GENERATION) {
     // Find a neighbour that has already been visited
     for(n <- nextCell.neighbours) {
         if(visited.contains(n)) {
-          mazeDrawer.drawCells(Passage(Set(nextCell,n)))
+          mazeDrawer.drawCells(Array(nextCell,n))
 
           if(mode == Mode.GENERATION) Thread.sleep(10)
-          primsfrontier(nextCell)
+          primsFrontier(nextCell)
           return
         }
     }
@@ -45,7 +45,4 @@ class Prims(mode: String = Mode.GENERATION) {
 
   // If in game mode, start game
   if(mode == Mode.GAME) new Game(maze, mazeDrawer)
-
-  // TODO: Add pathfinding
-  //  if(mode == Mode.RESOLUTION) new DFSResolution(maze)
 }
