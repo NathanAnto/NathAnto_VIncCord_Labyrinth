@@ -1,7 +1,7 @@
 package general
 
 import hevs.graphics.FunGraphics
-
+import hevs.graphics.utils.GraphicsBitmap
 import java.awt.Color
 import java.awt.event.{KeyAdapter, KeyEvent}
 
@@ -75,6 +75,21 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
       case Direction.UP =>    fg.drawFillRect(x, y, RATIO - WALLSIZE, RATIO * 2 - WALLSIZE)
       case Direction.DOWN =>  fg.drawFillRect(x, y, RATIO - WALLSIZE, RATIO * 2 - WALLSIZE)
       case _ => println(s"NOT A VALID DIRECTION! '$direction'")
+    }
+  }
+
+  def winimage(): Unit = {
+    // Image should be in /src/res/ directory for this example to wor
+    val bm = new GraphicsBitmap("/res/img/mandrill.jpg")
+    val scale = 1
+    var angle = 0
+    var offset = 0.01
+    fg.frontBuffer.synchronized {
+      fg.clear(Color.white)
+      val x = fg.getFrameWidth / 2
+      val y = fg.getFrameHeight / 2 - 25
+      // Coordinates X and Y are where to draw the center of the image
+      fg.drawTransformedPicture(x, y, angle, scale, bm)
     }
   }
 
