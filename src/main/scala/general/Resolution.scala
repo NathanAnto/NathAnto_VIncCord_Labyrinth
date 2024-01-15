@@ -42,7 +42,7 @@ class Resolution(maze: Maze, mazeDrawer: MazeDrawer) {
       closedList += current
       mazeDrawer.drawCell(current, Color.cyan)
 
-//      Thread.sleep(100)
+      Thread.sleep(50)
       // Find all current cells neighbours and add them to openList
       for(n <- current.neighbours) {
         // Calculate all the open neighbour parameters (g, h, f)

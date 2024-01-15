@@ -78,8 +78,8 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
     }
   }
 
-  def winimage(): Unit = {
-    // Image should be in /src/res/ directory for this example to wor
+  def winImage(): Unit = {
+    // Image should be in /src/res/ directory for this example to work
     val bm = new GraphicsBitmap("/res/img/mandrill.jpg")
     val scale = 1
     var angle = 0

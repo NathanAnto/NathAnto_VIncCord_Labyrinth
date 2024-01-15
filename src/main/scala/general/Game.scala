@@ -26,82 +26,78 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
   mazeDrawer.drawPlayer(maze.getCell(playerX, playerY))
   mazeDrawer.drawCell(endCell, Color.red)
 
+  fg.setKeyManager(new KeyAdapter() {
 
-  // Do something when a key has been pressed
-  fg.setKeyManager(new KeyAdapter() { // Will be called when a key has been pressed
+    // When a key has been pressed, this function will be called
     override def keyPressed(e: KeyEvent): Unit = {
-      if (e.getKeyCode == KeyEvent.VK_W) {
-        if(maze.getUsablePassages.contains(maze.getUsablePassage(
-          maze.getCell(playerX, playerY),
-          maze.getCell(playerX, playerY-1)
-        ))) {
-          playerY -= 1
-          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.UP)
+      if(!playSound) {
+        if (e.getKeyCode == KeyEvent.VK_W) {
+          if (maze.getUsablePassages.contains(maze.getUsablePassage(
+            maze.getCell(playerX, playerY),
+            maze.getCell(playerX, playerY - 1)
+          ))) {
+            playerY -= 1
+            mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.UP)
+          }
         }
-      }
-      if (e.getKeyCode == KeyEvent.VK_S) {
-        if(maze.getUsablePassages.contains(maze.getUsablePassage(
-          maze.getCell(playerX, playerY),
-          maze.getCell(playerX, playerY+1)
-        ))) {
-          playerY += 1
-          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.DOWN)
+        if (e.getKeyCode == KeyEvent.VK_S) {
+          if (maze.getUsablePassages.contains(maze.getUsablePassage(
+            maze.getCell(playerX, playerY),
+            maze.getCell(playerX, playerY + 1)
+          ))) {
+            playerY += 1
+            mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.DOWN)
+          }
         }
-      }
-      if (e.getKeyCode == KeyEvent.VK_A) {
-        if(maze.getUsablePassages.contains(maze.getUsablePassage(
-          maze.getCell(playerX, playerY),
-          maze.getCell(playerX-1, playerY)
-        ))) {
-          playerX -= 1
-          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.LEFT)
+        if (e.getKeyCode == KeyEvent.VK_A) {
+          if (maze.getUsablePassages.contains(maze.getUsablePassage(
+            maze.getCell(playerX, playerY),
+            maze.getCell(playerX - 1, playerY)
+          ))) {
+            playerX -= 1
+            mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.LEFT)
+          }
         }
-      }
-      if (e.getKeyCode == KeyEvent.VK_D) {
-        if(maze.getUsablePassages.contains(maze.getUsablePassage(
-          maze.getCell(playerX, playerY),
-          maze.getCell(playerX+1, playerY)
-        ))) {
-          playerX += 1
-          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.RIGHT)
+        if (e.getKeyCode == KeyEvent.VK_D) {
+          if (maze.getUsablePassages.contains(maze.getUsablePassage(
+            maze.getCell(playerX, playerY),
+            maze.getCell(playerX + 1, playerY)
+          ))) {
+            playerX += 1
+            mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.RIGHT)
+          }
         }
-      }
-      if (e.getKeyCode == KeyEvent.VK_R) {
-        res.aStar(startCell, endCell)
-      }
+        if (e.getKeyCode == KeyEvent.VK_R) {
+          playSound = true
+          res.aStar(startCell, endCell)
+        }
 
-      mazeDrawer.drawCell(startCell, Color.green)
-      mazeDrawer.drawCell(endCell, Color.red)
+        mazeDrawer.drawCell(startCell, Color.green)
+        mazeDrawer.drawCell(endCell, Color.red)
 
-      mazeDrawer.drawPlayer(maze.getCell(playerX,playerY))
+        mazeDrawer.drawPlayer(maze.getCell(playerX, playerY))
+      }
 
       if(playerX == endCell.x && playerY == endCell.y && !playSound){
         music.stop()
-        println("YOU WIN!!")
         playSound = true
 
-        // Spécifiez le chemin relatif du fichier batch par rapport au répertoire du projet
+        // Specify the relative path of the batch file to the project directory
         val relativeBatchFilePath = "src/main/scala/general/volume.bat"
 
-        // Spécifiez le chemin complet du fichier batch que vous souhaitez exécuter
+        // Specify the full path of the batch file you wish to run
         val batchFilePath = new File(relativeBatchFilePath).getAbsolutePath
 
-        // Créez un objet ProcessBuilder en utilisant le chemin du fichier batch
+        // Create a ProcessBuilder object using the batch file path
         val processBuilder = Process(Seq("cmd", "/c", batchFilePath))
 
-        // Exécutez le processus
         val process = processBuilder.run()
 
-        // Attendez que le processus se termine et obtenez le code de sortie
+        // Wait for the process to finish and obtain the output code
         val exitCode = process.exitValue()
 
-        // Affichez le code de sortie
-        println(s"Le fichier batch a été exécuté avec le code de sortie : $exitCode")
-        mazeDrawer.winimage()
-
-        // lancement du son
+        mazeDrawer.winImage()
         winSound.play()
-
       }
     }
   })
