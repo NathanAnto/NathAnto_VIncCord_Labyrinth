@@ -1,12 +1,13 @@
 ## Labyrinth Game
 
-Our project contains uses 3 different algorithms to generate mazes.
+Our project uses 3 different algorithms to generate mazes.
 We seperated the game into two modes:
+
 ### Generation mode
 This mode slowly shows how each algorithm generates the maze.
 
 ### Game mode
-In the game mode, you can play the maze by moving a character with w,a,s,d. If you're having solving the maze, there's a resolution mode using A* to solve the maze.
+In the game mode, you can play the maze by moving a character with w,a,s,d. If you're having trouble solving the maze, there's a resolution with the r key mode using A* to solve the maze.
 
 To understand the code, we created a [WIKI](https://github.com/NathanAnto/NathAnto_VIncCord_Labyrinth/wiki) that explains most classes and functions.
 
