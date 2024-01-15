@@ -8,12 +8,10 @@ import java.awt.event.{KeyAdapter, KeyEvent}
 class MazeDrawer(size: Int, name: String, val maze: Maze) {
 
   val fg = new FunGraphics(size, size, name)
-  private val ratio = size/maze.dimensions
-  private val WALLSIZE = math.min(ratio/2, ratio - 1)
+  private val RATIO = size/maze.dimensions
+  private val WALLSIZE = math.max(1, math.min(RATIO/2, RATIO - 1))
 
-
-  // Draw black bg
-  def drawBlackBackground() = {
+  private def drawBlackBackground(): Unit = {
     fg.setColor(Color.black)
     for(y <- 0 until fg.height; x <- 0 until fg.width)
       fg.setPixel(x,y)
@@ -25,38 +23,37 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
    * @param v value of cell position
    * @return value based on window size
    */
-  private def getRealValue(v: Int): Int = v * ratio + WALLSIZE / 2
+  private def getRealValue(v: Int): Int = v * RATIO + WALLSIZE/2
 
-
-  def drawCell(cell: Cell): Unit = {
-    drawCell(maze.getCell(cell.x,cell.y),Color.white)
-  }
-  def drawCell(cell: Cell, color: Color): Unit = {
+  def drawCell(cell: Cell, color: Color = Color.white): Unit = {
     val x = getRealValue(cell.x)
     val y = getRealValue(cell.y)
     fg.setColor(color)
-    fg.drawFillRect(x, y, ratio-WALLSIZE, ratio-WALLSIZE)
+    fg.drawFillRect(x, y, RATIO-WALLSIZE, RATIO-WALLSIZE)
   }
 
   /**
    * Draw passage between the cells passed
    * as parameters.
-   * @param startCell cell from which to draw
-   * @param endCell cell to draw to
+   * @param cells cells to draw
+   * @param color Optional color
    */
-  def drawCells(startCell: Cell, endCell: Cell): Unit = {
+  def drawCells(cells: Array[Cell], color: Color = Color.white): Unit = {
+    val startCell = cells(0)
+    val endCell = cells(1)
+
     if (startCell.x < endCell.x) {
-      maze.addUsedPassage(Passage(Set(endCell, startCell)))
-      drawCells(startCell, Direction.LEFT)
+      maze.addUsablePassage(startCell, endCell)
+      drawCells(startCell, Direction.LEFT, color)
     } else if (startCell.x > endCell.x) {
-      maze.addUsedPassage(Passage(Set(endCell, startCell)))
-      drawCells(endCell, Direction.RIGHT)
+      maze.addUsablePassage(startCell, endCell)
+      drawCells(endCell, Direction.RIGHT, color)
     } else if (startCell.y < endCell.y) {
-      maze.addUsedPassage(Passage(Set(endCell, startCell)))
-      drawCells(startCell, Direction.UP)
+      maze.addUsablePassage(startCell, endCell)
+      drawCells(startCell, Direction.UP, color)
     } else if (startCell.y > endCell.y) {
-      maze.addUsedPassage(Passage(Set(endCell, startCell)))
-      drawCells(endCell, Direction.DOWN)
+      maze.addUsablePassage(startCell, endCell)
+      drawCells(endCell, Direction.DOWN, color)
     }
   }
 
@@ -66,23 +63,22 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
    * @param startCell cell from which to draw
    * @param direction direction to draw from startCell
    */
-  def drawCells(startCell: Cell, direction: String): Unit = {
-    fg.setColor(Color.white)
+  private def drawCells(startCell: Cell, direction: String, color: Color): Unit = {
+    fg.setColor(color)
 
     val x: Int = getRealValue(startCell.x)
     val y: Int = getRealValue(startCell.y)
 
     direction match {
-      case Direction.LEFT =>  fg.drawFillRect(x, y, ratio*2-WALLSIZE, ratio-WALLSIZE)
-      case Direction.RIGHT => fg.drawFillRect(x, y, ratio*2-WALLSIZE, ratio-WALLSIZE)
-      case Direction.UP =>    fg.drawFillRect(x, y, ratio-WALLSIZE, ratio*2-WALLSIZE)
-      case Direction.DOWN =>  fg.drawFillRect(x, y, ratio-WALLSIZE, ratio*2-WALLSIZE)
+      case Direction.LEFT =>  fg.drawFillRect(x, y, RATIO * 2 - WALLSIZE, RATIO - WALLSIZE)
+      case Direction.RIGHT => fg.drawFillRect(x, y, RATIO * 2 - WALLSIZE, RATIO - WALLSIZE)
+      case Direction.UP =>    fg.drawFillRect(x, y, RATIO - WALLSIZE, RATIO * 2 - WALLSIZE)
+      case Direction.DOWN =>  fg.drawFillRect(x, y, RATIO - WALLSIZE, RATIO * 2 - WALLSIZE)
       case _ => println(s"NOT A VALID DIRECTION! '$direction'")
     }
   }
 
   def winimage(): Unit = {
-
     // Image should be in /src/res/ directory for this example to wor
     val bm = new GraphicsBitmap("/res/img/mandrill.jpg")
     val scale = 1
@@ -98,27 +94,18 @@ class MazeDrawer(size: Int, name: String, val maze: Maze) {
   }
 
   /**
-   *
-   * @param x Current x [[Cell]] position
-   * @param y Current y [[Cell]] position
-   */
-  def drawPlayer(x: Int, y: Int): Unit = {
-    drawCell(maze.getCell(x,y),Color.blue)
-  }
-  /**
-   *
+   * If no direction is passed, just draw the cell
    * @param x Current x [[Cell]] position
    * @param y Current y [[Cell]] position
    * @param direction What direction the player moved
    */
-  def drawPlayer(x: Int, y: Int, direction: String): Unit = {
-    drawPlayer(x,y)
-
+  def drawPlayer(cell: Cell, direction: String = "None"): Unit = {
     direction match {
-      case Direction.LEFT => drawCell(maze.getCell(x+1,y), Color.white)
-      case Direction.RIGHT => drawCell(maze.getCell(x-1,y), Color.white)
-      case Direction.UP => drawCell(maze.getCell(x,y+1), Color.white)
-      case Direction.DOWN => drawCell(maze.getCell(x,y-1), Color.white)
+      case Direction.LEFT => drawCell(maze.getCell(cell.x+1,cell.y), Color.white)
+      case Direction.RIGHT => drawCell(maze.getCell(cell.x-1,cell.y), Color.white)
+      case Direction.UP => drawCell(maze.getCell(cell.x,cell.y+1), Color.white)
+      case Direction.DOWN => drawCell(maze.getCell(cell.x,cell.y-1), Color.white)
+      case _ => drawCell(cell, Color.blue)
     }
   }
 }

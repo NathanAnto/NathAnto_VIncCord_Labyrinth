@@ -5,7 +5,6 @@ import general.Cell
 import scala.util.Random
 
 class PrimsMaze(override val dimensions: Int) extends general.Maze {
-
   var frontiers: Set[Cell] = Set()
   override def create(): Unit = {
     super.createCells()

@@ -19,9 +19,14 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
 
   private var playerX: Int = 0
   private var playerY: Int = 0
-  var fgame = true
+  val res = new Resolution(maze, mazeDrawer)
+  
+  var playSound = false
 
-  mazeDrawer.drawPlayer(playerX, playerY)
+  private var playerX: Int = startCell.x
+  private var playerY: Int = startCell.y
+
+  mazeDrawer.drawPlayer(maze.getCell(playerX, playerY))
   mazeDrawer.drawCell(endCell, Color.red)
 
 
@@ -29,52 +34,54 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
   fg.setKeyManager(new KeyAdapter() { // Will be called when a key has been pressed
     override def keyPressed(e: KeyEvent): Unit = {
       if (e.getKeyCode == KeyEvent.VK_W) {
-        if(maze.usablePassages.contains(Passage(Set(
+        if(maze.getUsablePassages.contains(maze.getUsablePassage(
           maze.getCell(playerX, playerY),
           maze.getCell(playerX, playerY-1)
-        )))) {
+        ))) {
           playerY -= 1
-          mazeDrawer.drawPlayer(playerX, playerY, Direction.UP)
+          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.UP)
         }
-
       }
       if (e.getKeyCode == KeyEvent.VK_S) {
-        if(maze.usablePassages.contains(Passage(Set(
+        if(maze.getUsablePassages.contains(maze.getUsablePassage(
           maze.getCell(playerX, playerY),
           maze.getCell(playerX, playerY+1)
-        )))) {
+        ))) {
           playerY += 1
-          mazeDrawer.drawPlayer(playerX, playerY, Direction.DOWN)
+          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.DOWN)
         }
       }
       if (e.getKeyCode == KeyEvent.VK_A) {
-        if(maze.usablePassages.contains(Passage(Set(
+        if(maze.getUsablePassages.contains(maze.getUsablePassage(
           maze.getCell(playerX, playerY),
           maze.getCell(playerX-1, playerY)
-        )))) {
+        ))) {
           playerX -= 1
-          mazeDrawer.drawPlayer(playerX, playerY, Direction.LEFT)
+          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.LEFT)
         }
       }
       if (e.getKeyCode == KeyEvent.VK_D) {
-        if(maze.usablePassages.contains(Passage(Set(
+        if(maze.getUsablePassages.contains(maze.getUsablePassage(
           maze.getCell(playerX, playerY),
           maze.getCell(playerX+1, playerY)
-        )))) {
+        ))) {
           playerX += 1
-          mazeDrawer.drawPlayer(playerX, playerY, Direction.RIGHT)
+          mazeDrawer.drawPlayer(maze.getCell(playerX, playerY), Direction.RIGHT)
         }
+      }
+      if (e.getKeyCode == KeyEvent.VK_R) {
+        res.aStar(startCell, endCell)
       }
 
       mazeDrawer.drawCell(startCell, Color.green)
       mazeDrawer.drawCell(endCell, Color.red)
 
-      mazeDrawer.drawPlayer(playerX,playerY)
+      mazeDrawer.drawPlayer(maze.getCell(playerX,playerY))
 
-      if(playerX == endCell.x && playerY == endCell.y && fgame){
+      if(playerX == endCell.x && playerY == endCell.y && !playSound){
         song.stop()
         println("YOU WIN!!")
-        fgame = false
+        playSound = true
 
         // Spécifiez le chemin relatif du fichier batch par rapport au répertoire du projet
         val relativeBatchFilePath = "src/main/scala/general/volume.bat"

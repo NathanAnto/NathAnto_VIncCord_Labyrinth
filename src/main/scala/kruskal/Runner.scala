@@ -1,7 +1,7 @@
 package kruskal
 
-class Runner(mode: String) extends Runnable {
+class Runner(mode: String, dimensions: Int) extends Runnable {
   override def run(): Unit = {
-    new Kruskal(mode)
+    new Kruskal(mode, dimensions)
   }
 }

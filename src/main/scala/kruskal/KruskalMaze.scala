@@ -22,10 +22,18 @@ class KruskalMaze(override val dimensions: Int) extends general.Maze {
       connections += Set(cell)
       cell.findNeighbours(this)
 
-      if ((!passages.contains(Passage(Set(cell, n))) || !passages.contains(Passage(Set(n, cell)))) && n != null) {
-        passages += Passage(Set(cell, n))
+      if ((!passages.contains(getPassage(cell, n)) || !passages.contains(getPassage(n, cell))) && n != null) {
+        passages += new Passage(cell, n)
       }
     }
+  }
+
+  private def getPassage(startCell: Cell, endCell: Cell): Passage = {
+    passages.foreach(p => {
+      if (p.cells.contains(startCell) && p.cells.contains(endCell))
+        return p
+    })
+    null
   }
 
   /**

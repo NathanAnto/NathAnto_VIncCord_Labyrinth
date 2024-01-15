@@ -1,23 +1,26 @@
 package kruskal
 
-import general.{Cell, Game, MazeDrawer, Mode}
+import general.{Cell, Game, MazeDrawer, Mode, Passage}
 
-class Kruskal(mode: String = Mode.GENERATION) {
-  val MAZEDIMENSIONS = 10
+class Kruskal(mode: String = Mode.GENERATION, dimensions: Int) {
+  val MAZEDIMENSIONS: Int = dimensions
   val maze: KruskalMaze = new KruskalMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer = new MazeDrawer(500, "Kruskal", maze)
+  val mazeDrawer = new MazeDrawer(MAZEDIMENSIONS*50, "Kruskal", maze)
 
   kruskal();
 
   def kruskal(): Unit = {
     // loop over every possible passage
     do {
-      val passageCells = maze.getRandomPassage.cells.toIndexedSeq
+      val passage: Passage = maze.getRandomPassage
+      val passageCells = passage.cells.toIndexedSeq
+
       var connection1: Set[Cell] = Set()
       var connection2: Set[Cell] = Set()
       var connected: Boolean = false
+
       maze.connections.foreach(conn => {
         if (conn.contains(passageCells(0)) && conn.contains(passageCells(1)))
           connected = true
@@ -37,7 +40,7 @@ class Kruskal(mode: String = Mode.GENERATION) {
         val newConnection: Set[Cell] = conn1.get ++ conn2.get
         maze.connections += newConnection
 
-        mazeDrawer.drawCells(passageCells(0), passageCells(1))
+        mazeDrawer.drawCells(Array(passage.cells(0), passage.cells(1)))
         if(mode == Mode.GENERATION) Thread.sleep(100)
       }
     } while(maze.connections.size > 1)
@@ -45,7 +48,4 @@ class Kruskal(mode: String = Mode.GENERATION) {
 
   // If in game mode, start game
   if(mode == Mode.GAME) new Game(maze, mazeDrawer)
-
-  // TODO: Add pathfinding
-  //  if(mode == Mode.RESOLUTION) new DFSResolution(maze)
 }

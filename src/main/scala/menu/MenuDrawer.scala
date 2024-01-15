@@ -8,8 +8,12 @@ import java.awt.Color
 class MenuDrawer(fg: FunGraphics) {
 
   def drawTitle(x: Int, y: Int, text: String): Unit = {
-    fg.setColor(Color.BLACK)
     fg.drawString(x, y, text,Color.BLACK, 20)
+  }
+
+  def drawText(x: Int, y: Int, text: String): Unit = {
+    fg.setColor(Color.BLACK)
+    fg.drawString(x, y, text)
   }
 
   /**

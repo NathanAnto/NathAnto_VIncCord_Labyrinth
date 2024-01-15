@@ -1,21 +1,21 @@
 package Prims
 
-import general.{Cell, Game, MazeDrawer, Mode}
+import general.{Cell, Game, MazeDrawer, Mode, Passage}
 
 import java.awt.Color
 
-class Prims(mode: String = Mode.GENERATION) {
-  val MAZEDIMENSIONS = 10
+class Prims(mode: String = Mode.GENERATION, dimensions: Int) {
+  val MAZEDIMENSIONS: Int = dimensions
   val maze: PrimsMaze = new PrimsMaze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(500, "Prims", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*50, "Prims", maze)
 
   var visited: Set[Cell] = Set()
 
-  primsfrontier(maze.getCell(0,0))
+  primsFrontier(maze.getCell(0,0))
 
-  def primsfrontier(location: Cell): Unit = {
+  private def primsFrontier(location: Cell): Unit = {
     visited += location
 
     // Get all neighbours that haven't been visited
@@ -26,17 +26,18 @@ class Prims(mode: String = Mode.GENERATION) {
           mazeDrawer.drawCell(l, Color.red)
       }
     }
-    var nextcell: Cell = maze.getRandomFrontier
-    if(nextcell == null) return
+    val nextCell: Cell = maze.getRandomFrontier
+    if(nextCell == null) return
 
-    visited += nextcell
+    visited += nextCell
 
     // Find a neighbour that has already been visited
-    for(n <- nextcell.neighbours) {
+    for(n <- nextCell.neighbours) {
         if(visited.contains(n)) {
-          mazeDrawer.drawCells(nextcell,n)
-          if(mode == Mode.GENERATION) Thread.sleep(100)
-          primsfrontier(nextcell)
+          mazeDrawer.drawCells(Array(nextCell,n))
+
+          if(mode == Mode.GENERATION) Thread.sleep(10)
+          primsFrontier(nextCell)
           return
         }
     }
@@ -44,7 +45,4 @@ class Prims(mode: String = Mode.GENERATION) {
 
   // If in game mode, start game
   if(mode == Mode.GAME) new Game(maze, mazeDrawer)
-
-  // TODO: Add pathfinding
-  //  if(mode == Mode.RESOLUTION) new DFSResolution(maze)
 }
