@@ -1,24 +1,21 @@
 package hunt_and_kill
 
-import general.{Cell, Maze, MazeDrawer, Passage}
+import general.{Cell, Game, Maze, MazeDrawer, Mode}
 
 import scala.collection.mutable
 import scala.util.Random
 
-class HuntAndKill {
-  val MAZEDIMENSIONS = 10
+class HuntAndKill(mode: String, dimensions: Int) {
+  val MAZEDIMENSIONS: Int = dimensions
   val maze: Maze = new Maze(MAZEDIMENSIONS)
   maze.create()
 
-  val mazeDrawer: MazeDrawer = new MazeDrawer(500, "Hunt & Kill", maze)
+  val mazeDrawer: MazeDrawer = new MazeDrawer(MAZEDIMENSIONS*50, "Hunt & Kill", maze)
 
   huntAndKill(maze.getCell(
-        Random.nextInt(MAZEDIMENSIONS),
-        Random.nextInt(MAZEDIMENSIONS)
+    Random.nextInt(MAZEDIMENSIONS),
+    Random.nextInt(MAZEDIMENSIONS)
   ), visited = mutable.Set())
-
-  // TODO: Add pathfinding
-  // TODO: Add movable character
 
   /**
    * Hunt and kill Algorithm
@@ -27,10 +24,10 @@ class HuntAndKill {
    */
   private def huntAndKill(location: Cell, visited: mutable.Set[Cell]): Unit = {
     visited += location
-    var tryCount = 0
 
     for(pos <- location.neighbours) {
-      if (!visited.contains(pos) && pos != null) {
+      if(!visited.contains(pos) && pos != null) {
+        if(mode == Mode.GENERATION) Thread.sleep(100)
         mazeDrawer.drawCells(Array(pos, location))
         huntAndKill(pos, visited)
       }
@@ -55,4 +52,7 @@ class HuntAndKill {
       }
     }
   }
+
+  // If in game mode, start game
+  if(mode == Mode.GAME) new Game(maze, mazeDrawer)
 }

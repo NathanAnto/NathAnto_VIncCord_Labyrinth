@@ -7,21 +7,18 @@ import java.awt.Color
 import java.awt.event.{KeyAdapter, KeyEvent}
 
 class Game(maze: Maze, mazeDrawer: MazeDrawer) {
-  // launch song
-  var song: AudioPlayer = new AudioPlayer("general/buckshotost.wav")
-  var winsong: AudioPlayer = new AudioPlayer("general/win.wav")
-  song.play()
 
   val fg: FunGraphics = mazeDrawer.fg
-
+  val res = new Resolution(maze, mazeDrawer)
   val startCell: Cell = maze.getCell(0,0)
   val endCell: Cell = maze.getCell(maze.dimensions-1, maze.dimensions-1)
 
-  private var playerX: Int = 0
-  private var playerY: Int = 0
-  val res = new Resolution(maze, mazeDrawer)
-  
-  var playSound = false
+  // launch song
+  private val music: AudioPlayer = new AudioPlayer("general/buckshotost.wav")
+  private val winSound: AudioPlayer = new AudioPlayer("general/win.wav")
+  music.play()
+
+  private var playSound = false
 
   private var playerX: Int = startCell.x
   private var playerY: Int = startCell.y
@@ -79,7 +76,7 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
       mazeDrawer.drawPlayer(maze.getCell(playerX,playerY))
 
       if(playerX == endCell.x && playerY == endCell.y && !playSound){
-        song.stop()
+        music.stop()
         println("YOU WIN!!")
         playSound = true
 
@@ -103,7 +100,7 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
         mazeDrawer.winimage()
 
         // lancement du son
-        winsong.play()
+        winSound.play()
 
       }
     }

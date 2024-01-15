@@ -1,8 +1,7 @@
 package dfs
 
-import general.{Cell, Game, Maze, MazeDrawer, Mode, Passage, Resolution}
+import general.{Cell, Game, Maze, MazeDrawer, Mode}
 
-import java.awt.Color
 import scala.collection.mutable
 import scala.util.Random
 
