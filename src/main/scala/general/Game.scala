@@ -82,20 +82,23 @@ class Game(maze: Maze, mazeDrawer: MazeDrawer) {
         music.stop()
         playSound = true
 
-        // Specify the relative path of the batch file to the project directory
-        val relativeBatchFilePath = "src/main/scala/general/volume.bat"
+        try {
+          // Specify the relative path of the batch file to the project directory
+          val relativeBatchFilePath = "src/main/scala/general/volume.bat"
 
-        // Specify the full path of the batch file you wish to run
-        val batchFilePath = new File(relativeBatchFilePath).getAbsolutePath
+          // Specify the full path of the batch file you wish to run
+          val batchFilePath = new File(relativeBatchFilePath).getAbsolutePath
 
-        // Create a ProcessBuilder object using the batch file path
-        val processBuilder = Process(Seq("cmd", "/c", batchFilePath))
+          // Create a ProcessBuilder object using the batch file path
+          val processBuilder = Process(Seq("cmd", "/c", batchFilePath))
 
-        val process = processBuilder.run()
+          val process = processBuilder.run()
 
-        // Wait for the process to finish and obtain the output code
-        val exitCode = process.exitValue()
-
+          // Wait for the process to finish and obtain the output code
+          val exitCode = process.exitValue()
+        } catch {
+          case e => println("Can't launch the bat")
+        }
         mazeDrawer.winImage()
         winSound.play()
       }
